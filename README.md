@@ -9,29 +9,31 @@ using for testing.
 ## Features
 * Initialize a matrix from
   * two-dimensional arrays
-  * one-dimensional arrays**
+  * one-dimensional arrays
   * strings**
   * files**
 * Unary matrix operations
   * abs**
-  * negative**
-  * transpose**
+  * negative
+  * transpose
 * Binary matrix operations
-  * addition**
-  * subtraction**
-  * scalar multiplication**
-  * matrix multiplication**
+  * addition
+  * subtraction
+  * scalar multiplication
+  * matrix multiplication
 * Other
   * trace**
   * determinant**
   * inverse**
-* Potentially also
+* Potentially also**
   * fill with random values
   * shuffle
   * resize
   * sparse matrices with sparsify/densify functions
   * flexible numerical types
   * smart slicing
+
+** not yet implemented
 
 ## Learning log
 * All about Java exceptions (checked and unchecked)
