@@ -63,7 +63,7 @@ public class Test {
     }
 
     try {
-      Matrix m2 = Matrix.zero(3, 4);
+      Matrix m2 = new ZeroMatrix(3, 4);
     }
     catch (RuntimeException e) {
       System.err.println("InputException: " + e.getMessage());
@@ -117,17 +117,105 @@ public class Test {
     System.out.println(matrix2);
 
     System.out.println(matrix1.multiply(matrix2));
+
+    Matrix m = new Matrix(3, 0);
+    System.out.println(m);
+    m = new Matrix(0, 3);
+    System.out.println(m);
+    Matrix m2 = new Matrix(0, 0);
+    System.out.println(m2);
+    System.out.println(m.multiply(m2));
+  }
+
+  public static void testDelete() {
+    Matrix m = new Matrix(2, 3);
+    System.out.println(m.fillRandom(5));
+    m.inplaceFillRandom(3,10);
+    System.out.println(m);
+    System.out.println(m.delColumn(0));
+    System.out.println(m.delColumn(1));
+    System.out.println(m.delColumn(2));
+    System.out.println(m.delRow(0));
+    System.out.println(m.delRow(1));
+    try {
+      System.out.println(m.delRow(2));
+    }
+    catch (RuntimeException e) {
+      System.err.println("DeleteException: " + e.getMessage());
+    }
+  }
+
+  public static void testPow() {
+    Matrix m = new IdentityMatrix(3);
+    m.inplaceFillRandom(-5,5);
+    System.out.println(m.pow(0));
+    System.out.println(m.pow(1));
+    System.out.println(m.pow(2));
+    m = new Matrix(3, 2);
+    try {
+      System.out.println(m.pow(0));
+    }
+    catch (RuntimeException e) {
+      System.err.println("PowException: " + e.getMessage());
+    }
+    Matrix empty = new IdentityMatrix(0);
+    try {
+      System.out.println(empty.pow(0));
+    }
+    catch (RuntimeException e) {
+      System.err.println("PowException: " + e.getMessage());
+    }
+    try {
+      System.out.println(empty.pow(1));
+    }
+    catch (RuntimeException e) {
+      System.err.println("PowException: " + e.getMessage());
+    }
+    try {
+      System.out.println(empty.pow(2));
+    }
+    catch (RuntimeException e) {
+      System.err.println("PowException: " + e.getMessage());
+    }
+  }
+
+  public static void testDeterminant() {
+    int[][] detvals = {{2, 0, 7, 0, 8}, {0, 3, 0, 0, 0}, {0, 4, 1, 0, 0}, {0, 8, 9, 10, 2}, {1, 1, 3, 2, 5}};
+    Matrix m = new Matrix(5, 5, detvals);
+    System.out.println(m);
+    System.out.println(m.determinant());
+
+    Matrix m2 = new Matrix(0, 0);
+    System.out.println(m2);
+    try {
+      System.out.println(m2.determinant());
+    }
+    catch (RuntimeException e) {
+      System.err.println("DeterminantException: " + e.getMessage());
+    }
+  }
+
+  public static void testAbs() {
+    Matrix m = new IdentityMatrix(3);
+    m.inplaceFillRandom(-5,5);
+    System.out.println(m);
+    System.out.println(m.abs());
   }
 
   public static void main(String[] args) {
-    //Test.testMatrixInput();
-    //Test.testTranspose();
-    //Test.testNeg();
-
     //transposed.set(neg);
     // test for shallow / deep copying with set
 
+    /*
+    Test.testMatrixInput();
+    Test.testTranspose();
+    Test.testNeg();
     Test.testMultiply();
+    Test.testDelete();
+    Test.testPow();
+    Test.testDeterminant();
+    Test.testAbs();
+    */
 
   }
 

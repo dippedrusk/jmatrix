@@ -13,7 +13,7 @@ using for testing.
   * strings**
   * files**
 * Unary matrix operations
-  * abs**
+  * abs
   * negative
   * transpose
 * Binary matrix operations
@@ -23,15 +23,16 @@ using for testing.
   * matrix multiplication
 * Other
   * trace**
-  * determinant**
+  * determinant
+  * minor
   * inverse**
-* Potentially also**
+* Potentially also
   * fill with random values
-  * shuffle
-  * resize
-  * sparse matrices with sparsify/densify functions
-  * flexible numerical types
-  * smart slicing
+  * shuffle**
+  * resize**
+  * sparse matrices with sparsify/densify functions**
+  * flexible numerical types**
+  * smart slicing**
 
 ** not yet implemented
 
