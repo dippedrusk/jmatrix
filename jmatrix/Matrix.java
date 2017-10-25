@@ -13,6 +13,10 @@ public class Matrix {
   private int n;
   private int[][] values;
 
+  /*
+   * Constructors
+   */
+
   /**
   * TODO: Documentation!
   */
@@ -71,6 +75,10 @@ public class Matrix {
     this.values = new int[m][n];
   }
 
+  /*
+   * Setters and getters
+   */
+
   public void set(int i, int j, int value) {
     if ((i < 0) || (j < 0)) {
       throw new IndexOutOfBoundsException("Indices to set are negative.");
@@ -99,6 +107,10 @@ public class Matrix {
     }
     return this.values[i][j];
   }
+
+  /*
+   * Fill matrix methods
+   */
 
   public Matrix fill(int k) {
     Matrix ret = new ZeroMatrix(this.m, this.n);
@@ -165,6 +177,10 @@ public class Matrix {
     this.set(this.fillRandom(lower, upper));
   }
 
+  /*
+   * Unary arithmetic
+   */
+
   public Matrix neg() {
     Matrix ret = new ZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
@@ -177,22 +193,6 @@ public class Matrix {
 
   public void inplaceNeg() {
     this.set(this.neg());
-  }
-
-  public Matrix pow(int x) {
-    if (this.m != this.n) {
-      throw new ArithmeticException("Only powers of n x n matrices can be calculated.");
-    }
-    if (x == 0) {
-      return new IdentityMatrix(this.m);
-    }
-    if (x == 1) {
-      return this;
-    }
-    if (x == 2) {
-      return this.multiply(this);
-    }
-    return (this.pow(x-1)).multiply(this);
   }
 
   public Matrix abs() {
@@ -209,31 +209,24 @@ public class Matrix {
     this.set(this.abs());
   }
 
-  public int determinant() {
-    if (this.m != this.n) {
-      throw new ArithmeticException("Only determinants of n x n matrices can be calculated.");
-    }
-    if (m == 0) {
-      throw new IllegalArgumentException("Determinants of empty matrices cannot be calculated.");
-    }
-    if (m == 1) {
-      return values[0][0];
-    }
-    int determinant = 0;
-    for (int j = 0; j < n; j++) {
-      determinant += Math.pow(-1, j) * values[0][j] * this.minor(0, j);
-    }
-    return determinant;
-  }
+  /*
+   * Binary arithmetic
+   */
 
-  public int minor(int i, int j) {
-    if ((i < 0) || (j < 0)) {
-      throw new IndexOutOfBoundsException("Indices to find the minor are negative.");
+  public Matrix pow(int x) {
+    if (this.m != this.n) {
+      throw new ArithmeticException("Only powers of n x n matrices can be calculated.");
     }
-    if ((i >= m) || (j >= n)) {
-      throw new IndexOutOfBoundsException("Indices to find the minor exceed matrix dimensions.");
+    if (x == 0) {
+      return new IdentityMatrix(this.m);
     }
-    return ((this.delRow(i)).delColumn(j)).determinant();
+    if (x == 1) {
+      return this;
+    }
+    if (x == 2) {
+      return this.multiply(this);
+    }
+    return (this.pow(x-1)).multiply(this);
   }
 
   public Matrix add(Matrix m) {
@@ -317,6 +310,51 @@ public class Matrix {
     this.set(this.multiply(m));
   }
 
+  /*
+   * Matrix operations - determinant, minor, transpose
+   */
+
+  public int determinant() {
+    if (this.m != this.n) {
+      throw new ArithmeticException("Only determinants of n x n matrices can be calculated.");
+    }
+    if (this.m == 0) {
+      throw new IllegalArgumentException("Determinants of empty matrices cannot be calculated.");
+    }
+    if (this.m == 1) {
+      return this.values[0][0];
+    }
+    int determinant = 0;
+    for (int j = 0; j < this.n; j++) {
+      determinant += Math.pow(-1, j) * this.values[0][j] * this.minor(0, j);
+    }
+    return determinant;
+  }
+
+  public int trace() {
+    if (this.m != this.n) {
+      throw new ArithmeticException("Only traces of n x n matrices can be calculated.");
+    }
+    if (this.m == 0) {
+      throw new IllegalArgumentException("Traces of empty matrices cannot be calculated.");
+    }
+    int trace = 0;
+    for (int i = 0; i < this.m; i++) {
+      trace += this.values[i][i];
+    }
+    return trace;
+  }
+
+  public int minor(int i, int j) {
+    if ((i < 0) || (j < 0)) {
+      throw new IndexOutOfBoundsException("Indices to find the minor are negative.");
+    }
+    if ((i >= m) || (j >= n)) {
+      throw new IndexOutOfBoundsException("Indices to find the minor exceed matrix dimensions.");
+    }
+    return ((this.delRow(i)).delColumn(j)).determinant();
+  }
+
   public Matrix transpose() {
     Matrix ret = new Matrix(this.n, this.m);
     for (int i = 0; i < this.m; i++) {
@@ -334,6 +372,19 @@ public class Matrix {
   public void inplaceTranspose() {
     this.set(this.transpose());
   }
+
+  public Matrix inverse() {
+    if (!this.isInvertible()) {
+      return null;
+    }
+    // TODO: complete
+    Matrix ret = new Matrix(this.m, this.n);
+    return ret;
+  }
+
+  /*
+   * Row and column modifiers
+   */
 
   public Matrix addColumn(int[] column) {
     if (column == null) {
@@ -437,12 +488,61 @@ public class Matrix {
     this.set(this.delRow(i));
   }
 
+  /*
+   * Boolean methods
+   */
+
   public boolean isEmpty() {
     if ((m == 0) || (n == 0)) {
       return true;
     }
     return false;
   }
+
+  public boolean isInvertible() {
+    /*
+     * Design choice - return false or throw error for empty and non-nxn matrices?
+     */
+    if (this.m != this.n) {
+      return false;
+    }
+    try {
+      return (this.determinant() != 0);
+    }
+    catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException("The inverse of an empty matrix is undefined.");
+    }
+  }
+
+  public boolean isInEchelonForm() {
+    /*
+     * A matrix is in echelon form iff
+     * 1. All nonzero rows are above any rows of all zeros.
+     * 2. Each leading entry of a row is in a column to the right of the leading
+     *    entry of the row above
+     * 3. All entries in a column below a leading entry are zeros
+     */
+    return (this.nonZeroRowsAboveZeroRows() && this.leadingEntriesEFCompliant());
+  }
+
+  public boolean isEF() {
+    return this.isInEchelonForm();
+  }
+
+  public boolean isInReducedRowEchelonForm() {
+    if (!this.isInEchelonForm()) {
+      return false;
+    }
+    return this.leadingEntriesRREFCompliant();
+  }
+
+  public boolean isRREF() {
+    return this.isInReducedRowEchelonForm();
+  }
+
+  /*
+   * Overridden methods
+   */
 
   @Override
   public String toString() {
@@ -488,6 +588,90 @@ public class Matrix {
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
         if (this.get(i, j) != m.get(i, j)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  /*
+   * Private helper methods
+   */
+
+  private boolean nonZeroRowsAboveZeroRows() {
+    /*
+     * Test cases: empty matrix, zero matrix, identity matrix (pass),
+     * no non zero rows matrix, zero rows above nonzero rows,
+     * non zero rows above zero rows (pass), mixed
+     */
+    int firstZeroRow = 0;
+    while (firstZeroRow < this.m) {
+      boolean zeroRow = true;
+      for (int j = 0; j < this.n; j++) {
+        if (this.get(firstZeroRow, j) != 0) {
+          zeroRow = false;
+        }
+      }
+      if (zeroRow) {
+        break;
+      }
+      firstZeroRow++;
+    }
+    for (int i = firstZeroRow + 1; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        if (this.get(i, j) != 0) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  private boolean leadingEntriesEFCompliant() {
+    // TODO: smarter matrix slicing might help make this method more efficient?
+    int leftmostLeadingEntryIndexAbove = -1;
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < leftmostLeadingEntryIndexAbove + 1; j++) {
+        if (this.get(i, j) != 0) {
+          // leading entry of this row not to the right of leading entry above
+          return false;
+        }
+      }
+      for (int j = leftmostLeadingEntryIndexAbove + 1; j < this.n; j++) {
+        if (this.get(i, j) != 0) {
+          // leading entry
+          leftmostLeadingEntryIndexAbove = j;
+          break;
+        }
+      }
+    }
+    return true;
+  }
+
+  private boolean leadingEntriesRREFCompliant() {
+    int leftmostLeadingEntryIndexAbove = -1;
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < leftmostLeadingEntryIndexAbove + 1; j++) {
+        if (this.get(i, j) != 0) {
+          // leading entry of this row not to the right of leading entry above
+          return false;
+        }
+      }
+      for (int j = leftmostLeadingEntryIndexAbove + 1; j < this.n; j++) {
+        if (this.get(i, j) == 1) {
+          // appropriate leading entry
+          leftmostLeadingEntryIndexAbove = j;
+          for (int i_prev = 0; i_prev < i; i_prev++) {
+            // checking entries above the leading entry
+            if (this.get(i_prev, j) != 0) {
+              return false;
+            }
+          }
+          break;
+        }
+        else if (this.get(i, j) != 0) {
+          // leading entry not 1
           return false;
         }
       }

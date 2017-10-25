@@ -202,6 +202,121 @@ public class Test {
     System.out.println(m.abs());
   }
 
+  public static void testEF() {
+   /*
+    * Condition 1 test cases: empty matrix, zero matrix, identity matrix (pass),
+    * no non zero rows matrix, zero rows above nonzero rows,
+    * non zero rows above zero rows (pass), mixed
+    */
+    Matrix m = new IdentityMatrix(3);
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    m = new ZeroMatrix(3, 4);
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    m = new ZeroMatrix(0, 0);
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    m = new Matrix(5, 4);
+    m.inplaceFillRandom(2,17);
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    int[] row = {0, 0, 0, 0};
+    m.inplaceAddRow(row);
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    m.inplaceAddRow(row);
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    int[] nonzerorow = {2, 0, 0, 0};
+    m.inplaceAddRow(nonzerorow);
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    int[] nonzerorow2 = {0, 0, 0, 2};
+    m.inplaceAddRow(nonzerorow2);
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    /*
+     * Condition 2, 3 test cases
+     */
+    m = new IdentityMatrix(3);
+    m.set(2, 0, 1);
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    m = new IdentityMatrix(3);
+    m.set(1, 1, 0);
+    m.set(2, 0, 1);
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    m = new ZeroMatrix(3, 3);
+    m.set(0, 0, 1);
+    m.set(1, 2, 1);
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    m = new ZeroMatrix(3, 3);
+    m.set(0, 0, 1);
+    m.set(1, 2, 1);
+    m.set(2, 2, 1);
+    System.out.println(m);
+    System.out.println(m.isEF());
+  }
+
+  public static void testRREF() {
+    Matrix m = new IdentityMatrix(3);
+    System.out.println(m);
+    System.out.println(m.isRREF());
+
+    m = new ZeroMatrix(3, 4);
+    System.out.println(m);
+    System.out.println(m.isRREF());
+
+    m = new ZeroMatrix(0, 0);
+    System.out.println(m);
+    System.out.println(m.isRREF());
+
+    m = new IdentityMatrix(3);
+    m.set(2, 0, 1);
+    System.out.println(m);
+    System.out.println(m.isRREF());
+
+    m = new IdentityMatrix(3);
+    m.set(1, 1, 0);
+    m.set(2, 0, 1);
+    System.out.println(m);
+    System.out.println(m.isRREF());
+
+    m = new ZeroMatrix(3, 3);
+    m.set(0, 0, 1);
+    m.set(1, 2, 1);
+    System.out.println(m);
+    System.out.println(m.isRREF());
+
+    m = new ZeroMatrix(3, 3);
+    m.set(0, 0, 1);
+    m.set(1, 2, 1);
+    m.set(0, 2, 1);
+    System.out.println(m);
+    System.out.println(m.isRREF());
+
+    m = new ZeroMatrix(3, 3);
+    m.set(0, 0, 1);
+    m.set(0, 1, 1);
+    m.set(1, 2, 1);
+    System.out.println(m);
+    System.out.println(m.isRREF());
+  }
+
   public static void main(String[] args) {
     //transposed.set(neg);
     // test for shallow / deep copying with set
@@ -215,6 +330,8 @@ public class Test {
     Test.testPow();
     Test.testDeterminant();
     Test.testAbs();
+    Test.testEF();
+    Test.testRREF();
     */
 
   }

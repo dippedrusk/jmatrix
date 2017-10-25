@@ -22,10 +22,15 @@ using for testing.
   * scalar multiplication
   * matrix multiplication
 * Other
-  * trace**
+  * trace
   * determinant
   * minor
   * inverse**
+  * reduction to echelon form / rref**
+* Boolean
+  * echelon form
+  * reduced row echelon form
+  * invertible
 * Potentially also
   * fill with random values
   * shuffle**
