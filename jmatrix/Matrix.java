@@ -5,22 +5,78 @@ import java.lang.Math;
 
 public class Matrix {
 
-  // TODO: check for n = 0 in nxn matrices
+  // TODO: check math for n = 0 in nxn matrices
   // TODO: addColumn and addRow should work on empty matrices
   // TODO: override hashcode - but how?
+  // TODO: Documentation!
 
   private int m;
   private int n;
-  private int[][] values;
+  private double[][] values;
 
   /*
    * Constructors
    */
-
-  /**
-  * TODO: Documentation!
-  */
+   
   public Matrix(int m, int n, int[][] values) {
+    if ((m < 0) || (n < 0)) {
+      throw new NegativeArraySizeException("The dimensions of a matrix cannot be negative.");
+    }
+    if (values == null) {
+      throw new NullPointerException("The array of matrix values cannot be null.");
+    }
+    if (values.length != m) {
+      throw new IllegalArgumentException("The number of rows of the array of matrix values does not match dimension m.");
+    }
+    for (int i = 0; i < m; i++) {
+      if (values[i] == null) {
+        throw new NullPointerException("The array of matrix values cannot contain null rows [row " + i + "].");
+      }
+      if (values[i].length != n) {
+        throw new IllegalArgumentException("The number of columns of the array does not match dimension n [row " + i + "].");
+      }
+    }
+
+    this.m = (n == 0) ? 0 : m;
+    this.n = (m == 0) ? 0 : n;
+    this.values = new double[m][n];
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        this.values[i][j] = (double) values[i][j];
+      }
+    }
+  }
+
+  public Matrix(int m, int n, float[][] values) {
+    if ((m < 0) || (n < 0)) {
+      throw new NegativeArraySizeException("The dimensions of a matrix cannot be negative.");
+    }
+    if (values == null) {
+      throw new NullPointerException("The array of matrix values cannot be null.");
+    }
+    if (values.length != m) {
+      throw new IllegalArgumentException("The number of rows of the array of matrix values does not match dimension m.");
+    }
+    for (int i = 0; i < m; i++) {
+      if (values[i] == null) {
+        throw new NullPointerException("The array of matrix values cannot contain null rows [row " + i + "].");
+      }
+      if (values[i].length != n) {
+        throw new IllegalArgumentException("The number of columns of the array does not match dimension n [row " + i + "].");
+      }
+    }
+
+    this.m = (n == 0) ? 0 : m;
+    this.n = (m == 0) ? 0 : n;
+    this.values = new double[m][n];
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        this.values[i][j] = (double) values[i][j];
+      }
+    }
+  }
+
+  public Matrix(int m, int n, double[][] values) {
     if ((m < 0) || (n < 0)) {
       throw new NegativeArraySizeException("The dimensions of a matrix cannot be negative.");
     }
@@ -57,8 +113,49 @@ public class Matrix {
 
     this.m = (n == 0) ? 0 : m;
     this.n = (m == 0) ? 0 : n;
-    this.values = new int[m][n];
+    this.values = new double[m][n];
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        this.values[i][j] = (double) values[i*n + j];
+      }
+    }
+  }
 
+  public Matrix(int m, int n, float[] values) {
+    if ((m < 0) || (n < 0)) {
+      throw new NegativeArraySizeException("The dimensions of a matrix cannot be negative.");
+    }
+    if (values == null) {
+      throw new NullPointerException("The array of matrix values cannot be null.");
+    }
+    if (values.length != m*n) {
+      throw new IllegalArgumentException("The length of the array of matrix values does not match the dimensions.");
+    }
+
+    this.m = (n == 0) ? 0 : m;
+    this.n = (m == 0) ? 0 : n;
+    this.values = new double[m][n];
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        this.values[i][j] = (double) values[i*n + j];
+      }
+    }
+  }
+
+  public Matrix(int m, int n, double[] values) {
+    if ((m < 0) || (n < 0)) {
+      throw new NegativeArraySizeException("The dimensions of a matrix cannot be negative.");
+    }
+    if (values == null) {
+      throw new NullPointerException("The array of matrix values cannot be null.");
+    }
+    if (values.length != m*n) {
+      throw new IllegalArgumentException("The length of the array of matrix values does not match the dimensions.");
+    }
+
+    this.m = (n == 0) ? 0 : m;
+    this.n = (m == 0) ? 0 : n;
+    this.values = new double[m][n];
     for (int i = 0; i < m; i++) {
       for (int j = 0; j < n; j++) {
         this.values[i][j] = values[i*n + j];
@@ -72,7 +169,7 @@ public class Matrix {
     }
     this.m = (n == 0) ? 0 : m;
     this.n = (m == 0) ? 0 : n;
-    this.values = new int[m][n];
+    this.values = new double[m][n];
   }
 
   /*
@@ -80,6 +177,26 @@ public class Matrix {
    */
 
   public void set(int i, int j, int value) {
+   if ((i < 0) || (j < 0)) {
+     throw new IndexOutOfBoundsException("Indices to set are negative.");
+   }
+   if ((i >= m) || (j >= n)) {
+     throw new IndexOutOfBoundsException("Indices to set exceed matrix dimensions.");
+   }
+   this.values[i][j] = (double) value;
+  }
+
+  public void set(int i, int j, float value) {
+   if ((i < 0) || (j < 0)) {
+     throw new IndexOutOfBoundsException("Indices to set are negative.");
+   }
+   if ((i >= m) || (j >= n)) {
+     throw new IndexOutOfBoundsException("Indices to set exceed matrix dimensions.");
+   }
+   this.values[i][j] = (double) value;
+  }
+
+  public void set(int i, int j, double value) {
     if ((i < 0) || (j < 0)) {
       throw new IndexOutOfBoundsException("Indices to set are negative.");
     }
@@ -98,7 +215,7 @@ public class Matrix {
     this.values = m.values;
   }
 
-  public int get(int i, int j) {
+  public Double get(int i, int j) {
     if ((i < 0) || (j < 0)) {
       throw new IndexOutOfBoundsException("Indices to get are negative.");
     }
@@ -122,11 +239,39 @@ public class Matrix {
     return ret;
   }
 
+  public Matrix fill(float k) {
+    Matrix ret = new ZeroMatrix(this.m, this.n);
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        ret.set(i, j, k);
+      }
+    }
+    return ret;
+  }
+
+  public Matrix fill(double k) {
+    Matrix ret = new ZeroMatrix(this.m, this.n);
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        ret.set(i, j, k);
+      }
+    }
+    return ret;
+  }
+
   public void inplaceFill(int k) {
     this.set(this.fill(k));
   }
 
-  public Matrix fillRandom() {
+  public void inplaceFill(float k) {
+    this.set(this.fill(k));
+  }
+
+  public void inplaceFill(double k) {
+    this.set(this.fill(k));
+  }
+
+  public Matrix fillRandomInt() {
     Matrix ret = new ZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
@@ -137,7 +282,7 @@ public class Matrix {
     return ret;
   }
 
-  public Matrix fillRandom(int upper) {
+  public Matrix fillRandomInt(int upper) {
     Matrix ret = new ZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
@@ -148,7 +293,7 @@ public class Matrix {
     return ret;
   }
 
-  public Matrix fillRandom(int lower, int upper) {
+  public Matrix fillRandomInt(int lower, int upper) {
     if (lower > upper) {
       throw new IllegalArgumentException("The lower bound is greater than the upper bound.");
     }
@@ -165,16 +310,103 @@ public class Matrix {
     return ret;
   }
 
-  public void inplaceFillRandom() {
-    this.set(this.fillRandom());
+  public Matrix fillRandomFloat() {
+    Matrix ret = new ZeroMatrix(this.m, this.n);
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        Random rand = new Random();
+        ret.set(i, j, rand.nextDouble());
+      }
+    }
+    return ret;
   }
 
-  public void inplaceFillRandom(int upper) {
-    this.set(this.fillRandom(upper));
+  public Matrix fillRandomFloat(float upper) {
+    Matrix ret = new ZeroMatrix(this.m, this.n);
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        Random rand = new Random();
+        ret.set(i, j, rand.nextDouble() * upper);
+      }
+    }
+    return ret;
   }
 
-  public void inplaceFillRandom(int lower, int upper) {
-    this.set(this.fillRandom(lower, upper));
+  public Matrix fillRandomFloat(float lower, float upper) {
+    if (lower > upper) {
+      throw new IllegalArgumentException("The lower bound is greater than the upper bound.");
+    }
+    if (lower == upper) {
+      throw new IllegalArgumentException("The lower bound is equal to the upper bound.");
+    }
+    Matrix ret = new ZeroMatrix(this.m, this.n);
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        Random rand = new Random();
+        ret.set(i, j, rand.nextDouble() * (upper - lower) + lower); // TODO: check math
+      }
+    }
+    return ret;
+  }
+
+  public Matrix fillRandomFloat(double upper) {
+    Matrix ret = new ZeroMatrix(this.m, this.n);
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        Random rand = new Random();
+        ret.set(i, j, rand.nextDouble() * upper);
+      }
+    }
+    return ret;
+  }
+
+  public Matrix fillRandomFloat(double lower, double upper) {
+    if (lower > upper) {
+      throw new IllegalArgumentException("The lower bound is greater than the upper bound.");
+    }
+    if (lower == upper) {
+      throw new IllegalArgumentException("The lower bound is equal to the upper bound.");
+    }
+    Matrix ret = new ZeroMatrix(this.m, this.n);
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        Random rand = new Random();
+        ret.set(i, j, rand.nextDouble() * (upper - lower) + lower); // TODO: check math
+      }
+    }
+    return ret;
+  }
+
+  public void inplaceFillRandomInt() {
+    this.set(this.fillRandomInt());
+  }
+
+  public void inplaceFillRandomInt(int upper) {
+    this.set(this.fillRandomInt(upper));
+  }
+
+  public void inplaceFillRandomInt(int lower, int upper) {
+    this.set(this.fillRandomInt(lower, upper));
+  }
+
+  public void inplaceFillRandomFloat() {
+    this.set(this.fillRandomFloat());
+  }
+
+  public void inplaceFillRandomFloat(float upper) {
+    this.set(this.fillRandomFloat(upper));
+  }
+
+  public void inplaceFillRandomFloat(float lower, float upper) {
+    this.set(this.fillRandomFloat(lower, upper));
+  }
+
+  public void inplaceFillRandomFloat(double upper) {
+    this.set(this.fillRandomFloat(upper));
+  }
+
+  public void inplaceFillRandomFloat(double lower, double upper) {
+    this.set(this.fillRandomFloat(lower, upper));
   }
 
   /*
@@ -239,7 +471,7 @@ public class Matrix {
     Matrix ret = new Matrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
-        int entrysum = this.get(i, j) + m.get(i, j);
+        double entrysum = this.get(i, j) + m.get(i, j);
         ret.set(i, j, entrysum);
       }
     }
@@ -260,7 +492,7 @@ public class Matrix {
     Matrix ret = new Matrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
-        int entrydiff = this.get(i, j) - m.get(i, j);
+        double entrydiff = this.get(i, j) - m.get(i, j);
         ret.set(i, j, entrydiff);
       }
     }
@@ -281,7 +513,35 @@ public class Matrix {
     return ret;
   }
 
+  public Matrix multiply(float k) {
+    Matrix ret = new Matrix(this.m, this.n);
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        ret.set(i, j, k * this.get(i, j));
+      }
+    }
+    return ret;
+  }
+
+  public Matrix multiply(double k) {
+    Matrix ret = new Matrix(this.m, this.n);
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        ret.set(i, j, k * this.get(i, j));
+      }
+    }
+    return ret;
+  }
+
   public void inplaceMultiply(int k) {
+    this.set(this.multiply(k));
+  }
+
+  public void inplaceMultiply(float k) {
+    this.set(this.multiply(k));
+  }
+
+  public void inplaceMultiply(double k) {
     this.set(this.multiply(k));
   }
 
@@ -314,7 +574,7 @@ public class Matrix {
    * Matrix operations - determinant, minor, transpose
    */
 
-  public int determinant() {
+  public double determinant() {
     if (this.m != this.n) {
       throw new ArithmeticException("Only determinants of n x n matrices can be calculated.");
     }
@@ -324,28 +584,28 @@ public class Matrix {
     if (this.m == 1) {
       return this.values[0][0];
     }
-    int determinant = 0;
+    double determinant = 0;
     for (int j = 0; j < this.n; j++) {
       determinant += Math.pow(-1, j) * this.values[0][j] * this.minor(0, j);
     }
     return determinant;
   }
 
-  public int trace() {
+  public double trace() {
     if (this.m != this.n) {
       throw new ArithmeticException("Only traces of n x n matrices can be calculated.");
     }
     if (this.m == 0) {
       throw new IllegalArgumentException("Traces of empty matrices cannot be calculated.");
     }
-    int trace = 0;
+    double trace = 0;
     for (int i = 0; i < this.m; i++) {
       trace += this.values[i][i];
     }
     return trace;
   }
 
-  public int minor(int i, int j) {
+  public double minor(int i, int j) {
     if ((i < 0) || (j < 0)) {
       throw new IndexOutOfBoundsException("Indices to find the minor are negative.");
     }
@@ -403,6 +663,40 @@ public class Matrix {
     return ret;
   }
 
+  public Matrix addColumn(float[] column) {
+    if (column == null) {
+      throw new NullPointerException("The column to be added is null.");
+    }
+    if (this.m != column.length) {
+      throw new IllegalArgumentException("The rows of the column do not match the rows of the matrix.");
+    }
+    Matrix ret = new Matrix(this.m, this.n + 1);
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        ret.set(i, j, this.get(i, j));
+      }
+      ret.set(i, this.n, column[i]);
+    }
+    return ret;
+  }
+
+  public Matrix addColumn(double[] column) {
+    if (column == null) {
+      throw new NullPointerException("The column to be added is null.");
+    }
+    if (this.m != column.length) {
+      throw new IllegalArgumentException("The rows of the column do not match the rows of the matrix.");
+    }
+    Matrix ret = new Matrix(this.m, this.n + 1);
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        ret.set(i, j, this.get(i, j));
+      }
+      ret.set(i, this.n, column[i]);
+    }
+    return ret;
+  }
+
   public Matrix addColumn() {
     Matrix ret = new Matrix(this.m, this.n + 1);
     for (int i = 0; i < this.m; i++) {
@@ -414,6 +708,14 @@ public class Matrix {
   }
 
   public void inplaceAddColumn(int[] column) {
+    this.set(this.addColumn(column));
+  }
+
+  public void inplaceAddColumn(float[] column) {
+    this.set(this.addColumn(column));
+  }
+
+  public void inplaceAddColumn(double[] column) {
     this.set(this.addColumn(column));
   }
 
@@ -438,7 +740,49 @@ public class Matrix {
     return ret;
   }
 
+  public Matrix addRow(float[] row) {
+    if (row == null) {
+      throw new NullPointerException("The row to be added is null.");
+    }
+    if (this.n != row.length) {
+      throw new IllegalArgumentException("The columns of the row do not match the columns of the matrix.");
+    }
+    Matrix ret = new Matrix(this.m + 1, this.n);
+    for (int j = 0; j < this.n; j++) {
+      for (int i = 0; i < this.m; i++) {
+        ret.set(i, j, this.get(i, j));
+      }
+      ret.set(this.m, j, row[j]);
+    }
+    return ret;
+  }
+
+  public Matrix addRow(double[] row) {
+    if (row == null) {
+      throw new NullPointerException("The row to be added is null.");
+    }
+    if (this.n != row.length) {
+      throw new IllegalArgumentException("The columns of the row do not match the columns of the matrix.");
+    }
+    Matrix ret = new Matrix(this.m + 1, this.n);
+    for (int j = 0; j < this.n; j++) {
+      for (int i = 0; i < this.m; i++) {
+        ret.set(i, j, this.get(i, j));
+      }
+      ret.set(this.m, j, row[j]);
+    }
+    return ret;
+  }
+
   public void inplaceAddRow(int[] row) {
+    this.set(this.addRow(row));
+  }
+
+  public void inplaceAddRow(float[] row) {
+    this.set(this.addRow(row));
+  }
+
+  public void inplaceAddRow(double[] row) {
     this.set(this.addRow(row));
   }
 
@@ -546,7 +890,7 @@ public class Matrix {
 
   @Override
   public String toString() {
-    // TODO: Improve padding for negative numbers and varying digits
+    // TODO: Improve padding for negative numbers, varying digits, float
     String matrix = "[ ";
     for (int i = 0; i < m; i++) {
       String row = "";
@@ -677,6 +1021,63 @@ public class Matrix {
       }
     }
     return true;
+  }
+
+  /*
+   * Elementary row operations
+   * 1) Swapping two rows
+   * 2) Multiplying a row by a non-zero number
+   * 3) Adding a multiple of one row to another row.
+   */
+
+  private void swapRows(int row_i, int row_j) {
+    if ((row_i < 0) || (row_j < 0)) {
+      throw new IndexOutOfBoundsException("Row index to swap is negative.");
+    }
+    if ((row_i >= this.m) || (row_j >= this.n)) {
+      throw new IndexOutOfBoundsException("Row index to swap exceeds matrix dimensions.");
+    }
+    for (int j = 0; j < this.n; j++) {
+      double temp = this.values[row_i][j];
+      this.values[row_i][j] = this.values[row_j][j];
+      this.values[row_j][j] = temp;
+    }
+  }
+
+  private void scaleRow(int row_i, float const_k) {
+    if (row_i < 0) {
+      throw new IndexOutOfBoundsException("Row index to scale is negative.");
+    }
+    if (row_i >= this.m) {
+      throw new IndexOutOfBoundsException("Row index to scale exceeds matrix dimensions.");
+    }
+    if (const_k == 0) {
+      throw new IllegalArgumentException("Scaling by 0 not allowed.");
+    }
+    for (int j = 0; j < this.n; j++) {
+      this.values[row_i][j] *= const_k;
+    }
+  }
+
+  private void addScaledRow(int row_i, float const_k, int row_j) {
+    if (row_i < 0) {
+      throw new IndexOutOfBoundsException("Row index to scale is negative.");
+    }
+    if (row_j < 0) {
+      throw new IndexOutOfBoundsException("Row index to add is negative.");
+    }
+    if (row_i >= this.m) {
+      throw new IndexOutOfBoundsException("Row index to scale exceeds matrix dimensions.");
+    }
+    if (row_j >= this.n) {
+      throw new IndexOutOfBoundsException("Row index to add exceeds matrix dimensions.");
+    }
+    if (const_k == 0) {
+      throw new IllegalArgumentException("Scaling by 0 not allowed.");
+    }
+    for (int j = 0; j < this.n; j++) {
+      this.values[row_j][j] += this.values[row_i][j] * const_k;
+    }
   }
 
 }

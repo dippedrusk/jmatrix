@@ -129,8 +129,8 @@ public class Test {
 
   public static void testDelete() {
     Matrix m = new Matrix(2, 3);
-    System.out.println(m.fillRandom(5));
-    m.inplaceFillRandom(3,10);
+    System.out.println(m.fillRandomInt(5));
+    m.inplaceFillRandomInt(3,10);
     System.out.println(m);
     System.out.println(m.delColumn(0));
     System.out.println(m.delColumn(1));
@@ -147,7 +147,7 @@ public class Test {
 
   public static void testPow() {
     Matrix m = new IdentityMatrix(3);
-    m.inplaceFillRandom(-5,5);
+    m.inplaceFillRandomInt(-5,5);
     System.out.println(m.pow(0));
     System.out.println(m.pow(1));
     System.out.println(m.pow(2));
@@ -197,7 +197,7 @@ public class Test {
 
   public static void testAbs() {
     Matrix m = new IdentityMatrix(3);
-    m.inplaceFillRandom(-5,5);
+    m.inplaceFillRandomInt(-5,5);
     System.out.println(m);
     System.out.println(m.abs());
   }
@@ -221,7 +221,7 @@ public class Test {
     System.out.println(m.isEF());
 
     m = new Matrix(5, 4);
-    m.inplaceFillRandom(2,17);
+    m.inplaceFillRandomInt(2,17);
     System.out.println(m);
     System.out.println(m.isEF());
 
@@ -321,7 +321,6 @@ public class Test {
     //transposed.set(neg);
     // test for shallow / deep copying with set
 
-    /*
     Test.testMatrixInput();
     Test.testTranspose();
     Test.testNeg();
@@ -332,7 +331,6 @@ public class Test {
     Test.testAbs();
     Test.testEF();
     Test.testRREF();
-    */
 
   }
 

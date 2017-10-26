@@ -36,7 +36,7 @@ using for testing.
   * shuffle**
   * resize**
   * sparse matrices with sparsify/densify functions**
-  * flexible numerical types**
+  * flexible numerical types
   * smart slicing**
 
 ** not yet implemented
@@ -46,3 +46,6 @@ using for testing.
 * Wrote my first custom exception (then deleted it because I found better pre-existing ones)
 * Bundling Java classes++ into a package / accessing package members
 * MATH!
+* Realized that Java generics are somewhat restrictive - since I needed my underlying
+  matrix representation to have a 2D array of double values, I had to duplicate a lot of code
+  to allow flexibility at the user end in instantiating matrices with int or float array values
