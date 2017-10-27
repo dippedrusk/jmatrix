@@ -1,5 +1,6 @@
 
 import jmatrix.*;
+import java.util.Random;
 
 public class Test {
 
@@ -317,10 +318,103 @@ public class Test {
     System.out.println(m.isRREF());
   }
 
+  public static void testEchelonForm() {
+    Matrix m = new Matrix(3, 4);
+    m.inplaceFillRandomInt(2, 9);
+    System.out.println(m);
+    m.echelonForm();
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    m.reducedRowEchelonForm();
+    System.out.println(m);
+    System.out.println(m.isRREF());
+
+    int[][] values = {{7,6,5}, {6,4,4}, {6,8,5}};
+    m = new Matrix(3, 3, values);
+    System.out.println(m);
+    m.echelonForm();
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    m.reducedRowEchelonForm();
+    System.out.println(m);
+    System.out.println(m.isRREF());
+
+    int[][] values2 = {{3,3,7}, {7,3,2}, {3,3,7}};
+    m = new Matrix(3, 3, values2);
+    System.out.println(m);
+    m.echelonForm();
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    m.reducedRowEchelonForm();
+    System.out.println(m);
+    System.out.println(m.isRREF());
+
+    int[][] values3 = {{4,2,6}, {4,4,8}, {6,7,3}};
+    m = new Matrix(3, 3, values3);
+    System.out.println(m);
+    m.echelonForm();
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    m.reducedRowEchelonForm();
+    System.out.println(m);
+    System.out.println(m.isRREF());
+
+    int[][] values4 = {{6,8,8}, {6,3,4}, {6,2,4}};
+    m = new Matrix(3, 3, values4);
+    System.out.println(m);
+    m.echelonForm();
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    m.reducedRowEchelonForm();
+    System.out.println(m);
+    System.out.println(m.isRREF());
+  }
+
+  public static void testInverse() {
+    // preliminary testing with pre-augmented matrices
+    int[][] values3 = {{4,2,6}, {4,4,8}, {6,7,3}};
+    Matrix m = new Matrix(3, 3, values3);
+    System.out.println(m);
+    System.out.println(m.inverse());
+
+    int[][] values4 = {{6,8,8}, {6,3,4}, {6,2,4}};
+    m = new Matrix(3, 3, values4);
+    System.out.println(m);
+    System.out.println(m.inverse());
+    System.out.println();
+
+    for (int i = 0; i < 200; i++) {
+      Random rand = new Random();
+      m = new Matrix(rand.nextInt(10), rand.nextInt(10));
+      m.inplaceFillRandomInt(-5, 5);
+      System.out.println(m);
+      Matrix inverse = null;
+      try {
+        inverse = m.inverse();
+      }
+      catch (RuntimeException e) {
+        System.err.println("InversionException: " + e.getMessage());
+      }
+      if (inverse != null) {
+        System.out.println(inverse);
+      }
+      else {
+        System.out.println("The matrix is singular.");
+      }
+      System.out.println();
+    }
+  }
+
   public static void main(String[] args) {
     //transposed.set(neg);
     // test for shallow / deep copying with set
 
+    /*
     Test.testMatrixInput();
     Test.testTranspose();
     Test.testNeg();
@@ -331,6 +425,10 @@ public class Test {
     Test.testAbs();
     Test.testEF();
     Test.testRREF();
+    Test.testEchelonForm();
+    */
+
+    Test.testInverse();
 
   }
 

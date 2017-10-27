@@ -17,7 +17,7 @@ public class Matrix {
   /*
    * Constructors
    */
-   
+
   public Matrix(int m, int n, int[][] values) {
     if ((m < 0) || (n < 0)) {
       throw new NegativeArraySizeException("The dimensions of a matrix cannot be negative.");
@@ -223,6 +223,28 @@ public class Matrix {
       throw new IndexOutOfBoundsException("Indices to get exceed matrix dimensions.");
     }
     return this.values[i][j];
+  }
+
+  public Matrix concat(Matrix m) {
+    if (m == null) {
+      throw new NullPointerException("The matrix to be added cannot be null.");
+    }
+    if (m.isEmpty()) {
+      return this;
+    }
+    if (this.m != m.m) {
+      throw new ArithmeticException("Matrices to be concatenated must have matching m dimensions.");
+    }
+    Matrix ret = new Matrix(this.m, this.n + m.n);
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        ret.values[i][j] = this.values[i][j];
+      }
+      for (int j = 0; j < m.n; j++) {
+        ret.values[i][this.n + j] = m.values[i][j];
+      }
+    }
+    return ret;
   }
 
   /*
@@ -633,12 +655,58 @@ public class Matrix {
     this.set(this.transpose());
   }
 
+  public void echelonForm() {
+    int min_dim = Math.min(this.m, this.n);
+    for (int k = 0; k < min_dim; k++) {
+      double max_val = 0.0;
+      int max_idx = 0;
+      for (int i = k; i < this.m; i++) {
+        if (Math.abs(this.values[i][k]) > max_val) {
+          max_val = this.values[i][k];
+          max_idx = i;
+        }
+      }
+      if (max_val != 0.0) {
+        swapRows(k, max_idx);
+        for (int i = k + 1; i < this.m; i++) {
+          double scalingFactor = this.values[i][k] / this.values[k][k];
+          for (int j = k + 1; j < this.n; j++) {
+            this.values[i][j] = this.values[i][j] - (this.values[k][j] * scalingFactor);
+          }
+          this.values[i][k] = 0;
+        }
+      }
+    }
+  }
+
+  public void reducedRowEchelonForm() {
+    this.echelonForm();
+    int min_dim = Math.min(this.m, this.n);
+    for (int k = 0; k < min_dim; k++) {
+      if (this.values[k][k] != 0) {
+        double scalingFactor = 1.0 / this.values[k][k];
+        this.scaleRow(k, scalingFactor);
+        for (int i = 0; i < k; i++) {
+          scalingFactor = - this.values[i][k];
+          if (scalingFactor != 0) {
+            this.addScaledRow(k, scalingFactor, i); // rowk = rowk + rowi * scalingFactor
+          }
+        }
+      }
+    }
+  }
+
   public Matrix inverse() {
     if (!this.isInvertible()) {
       return null;
     }
-    // TODO: complete
-    Matrix ret = new Matrix(this.m, this.n);
+    Matrix identity = new IdentityMatrix(this.m);
+    Matrix ret = this.concat(identity);
+    ret.reducedRowEchelonForm();
+    // TODO: improve with slicing
+    for (int i = 0; i < this.m; i++) {
+      ret.inplaceDelColumn(i);
+    }
     return ret;
   }
 
@@ -1044,7 +1112,7 @@ public class Matrix {
     }
   }
 
-  private void scaleRow(int row_i, float const_k) {
+  private void scaleRow(int row_i, double const_k) {
     if (row_i < 0) {
       throw new IndexOutOfBoundsException("Row index to scale is negative.");
     }
@@ -1059,7 +1127,7 @@ public class Matrix {
     }
   }
 
-  private void addScaledRow(int row_i, float const_k, int row_j) {
+  private void addScaledRow(int row_i, double const_k, int row_j) {
     if (row_i < 0) {
       throw new IndexOutOfBoundsException("Row index to scale is negative.");
     }

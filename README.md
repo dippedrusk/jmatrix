@@ -25,8 +25,9 @@ using for testing.
   * trace
   * determinant
   * minor
-  * inverse**
-  * reduction to echelon form / rref**
+  * inverse
+  * reduction to echelon form and reduced row echelon form
+  * concat
 * Boolean
   * echelon form
   * reduced row echelon form
