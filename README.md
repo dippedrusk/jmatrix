@@ -21,17 +21,20 @@ using for testing.
   * subtraction
   * scalar multiplication
   * matrix multiplication
+  * concatenation
 * Other
   * trace
   * determinant
   * minor
   * inverse
   * reduction to echelon form and reduced row echelon form
-  * concat
+  * rank
 * Boolean
   * echelon form
   * reduced row echelon form
   * invertible
+  * full rank
+  * linearly dependent / independent
 * Potentially also
   * fill with random values
   * shuffle**
@@ -50,3 +53,4 @@ using for testing.
 * Realized that Java generics are somewhat restrictive - since I needed my underlying
   matrix representation to have a 2D array of double values, I had to duplicate a lot of code
   to allow flexibility at the user end in instantiating matrices with int or float array values
+* Practised good documentation + used javadocs for the first time

@@ -3,10 +3,14 @@ package jmatrix;
 import java.util.Random;
 import java.lang.Math;
 
+/**
+ * The <code>Matrix</code> class represents numerical matrices, an <code>m</code> x
+ * <code>n</code> array of <code>double</code> values.
+ * @author Vasundhara Gautam
+ * @version 0.0
+ */
 public class Matrix {
 
-  // TODO: check math for n = 0 in nxn matrices
-  // TODO: addColumn and addRow should work on empty matrices
   // TODO: override hashcode - but how?
   // TODO: Documentation!
 
@@ -18,7 +22,18 @@ public class Matrix {
    * Constructors
    */
 
-  public Matrix(int m, int n, int[][] values) {
+  /**
+   * <code>Matrix</code> constructor specifying dimensions and a 2-D array of
+   * <code>int</code> values.
+   * @param m number of rows
+   * @param n number of columns
+   * @param values 2-D array of <code>int</code> values
+   * @throws NegativeArraySizeException if <code>m</code> or <code>n</code> is negative
+   * @throws NullPointerException if <code>values</code> or a row within <code>values</code> is null
+   * @throws IllegalArgumentException if there is a dimension mismatch between <code>m</code> or <code>n</code>
+   * and <code>values</code>
+   */
+  public Matrix(int m, int n, int[][] values) throws NegativeArraySizeException, NullPointerException, IllegalArgumentException {
     if ((m < 0) || (n < 0)) {
       throw new NegativeArraySizeException("The dimensions of a matrix cannot be negative.");
     }
@@ -37,8 +52,8 @@ public class Matrix {
       }
     }
 
-    this.m = (n == 0) ? 0 : m;
-    this.n = (m == 0) ? 0 : n;
+    this.m = m;
+    this.n = n;
     this.values = new double[m][n];
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
@@ -47,7 +62,18 @@ public class Matrix {
     }
   }
 
-  public Matrix(int m, int n, float[][] values) {
+  /**
+   * <code>Matrix</code> constructor specifying dimensions and a 2-D array of
+   * <code>float</code> values.
+   * @param m number of rows
+   * @param n number of columns
+   * @param values 2-D array of <code>float</code> values
+   * @throws NegativeArraySizeException if <code>m</code> or <code>n</code> is negative
+   * @throws NullPointerException if <code>values</code> or a row within <code>values</code> is null
+   * @throws IllegalArgumentException if there is a dimension mismatch between <code>m</code> or <code>n</code>
+   * and <code>values</code>
+   */
+  public Matrix(int m, int n, float[][] values) throws NegativeArraySizeException, NullPointerException, IllegalArgumentException {
     if ((m < 0) || (n < 0)) {
       throw new NegativeArraySizeException("The dimensions of a matrix cannot be negative.");
     }
@@ -66,8 +92,8 @@ public class Matrix {
       }
     }
 
-    this.m = (n == 0) ? 0 : m;
-    this.n = (m == 0) ? 0 : n;
+    this.m = m;
+    this.n = n;
     this.values = new double[m][n];
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
@@ -76,7 +102,18 @@ public class Matrix {
     }
   }
 
-  public Matrix(int m, int n, double[][] values) {
+  /**
+   * <code>Matrix</code> constructor specifying dimensions and a 2-D array of
+   * <code>double</code> values.
+   * @param m number of rows
+   * @param n number of columns
+   * @param values 2-D array of <code>double</code> values
+   * @throws NegativeArraySizeException if <code>m</code> or <code>n</code> is negative
+   * @throws NullPointerException if <code>values</code> or a row within <code>values</code> is null
+   * @throws IllegalArgumentException if there is a dimension mismatch between <code>m</code> or <code>n</code>
+   * and <code>values</code>
+   */
+  public Matrix(int m, int n, double[][] values) throws NegativeArraySizeException, NullPointerException, IllegalArgumentException {
     if ((m < 0) || (n < 0)) {
       throw new NegativeArraySizeException("The dimensions of a matrix cannot be negative.");
     }
@@ -95,12 +132,23 @@ public class Matrix {
       }
     }
 
-    this.m = (n == 0) ? 0 : m;
-    this.n = (m == 0) ? 0 : n;
+    this.m = m;
+    this.n = n;
     this.values = values;
   }
 
-  public Matrix(int m, int n, int[] values) {
+  /**
+   * <code>Matrix</code> constructor specifying dimensions and a 1-D array of
+   * <code>int</code> values.
+   * @param m number of rows
+   * @param n number of columns
+   * @param values 1-D array of <code>int</code> values
+   * @throws NegativeArraySizeException if <code>m</code> or <code>n</code> is negative
+   * @throws NullPointerException if <code>values</code> is null
+   * @throws IllegalArgumentException if there is a dimension mismatch between <code>m</code> or <code>n</code>
+   * and <code>values</code>
+   */
+  public Matrix(int m, int n, int[] values) throws NegativeArraySizeException, NullPointerException, IllegalArgumentException {
     if ((m < 0) || (n < 0)) {
       throw new NegativeArraySizeException("The dimensions of a matrix cannot be negative.");
     }
@@ -111,8 +159,8 @@ public class Matrix {
       throw new IllegalArgumentException("The length of the array of matrix values does not match the dimensions.");
     }
 
-    this.m = (n == 0) ? 0 : m;
-    this.n = (m == 0) ? 0 : n;
+    this.m = m;
+    this.n = n;
     this.values = new double[m][n];
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
@@ -121,7 +169,18 @@ public class Matrix {
     }
   }
 
-  public Matrix(int m, int n, float[] values) {
+  /**
+   * <code>Matrix</code> constructor specifying dimensions and a 1-D array of
+   * <code>float</code> values.
+   * @param m number of rows
+   * @param n number of columns
+   * @param values 1-D array of <code>float</code> values
+   * @throws NegativeArraySizeException if <code>m</code> or <code>n</code> is negative
+   * @throws NullPointerException if <code>values</code> is null
+   * @throws IllegalArgumentException if there is a dimension mismatch between <code>m</code> or <code>n</code>
+   * and <code>values</code>
+   */
+  public Matrix(int m, int n, float[] values) throws NegativeArraySizeException, NullPointerException, IllegalArgumentException {
     if ((m < 0) || (n < 0)) {
       throw new NegativeArraySizeException("The dimensions of a matrix cannot be negative.");
     }
@@ -132,8 +191,8 @@ public class Matrix {
       throw new IllegalArgumentException("The length of the array of matrix values does not match the dimensions.");
     }
 
-    this.m = (n == 0) ? 0 : m;
-    this.n = (m == 0) ? 0 : n;
+    this.m = m;
+    this.n = n;
     this.values = new double[m][n];
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
@@ -142,7 +201,18 @@ public class Matrix {
     }
   }
 
-  public Matrix(int m, int n, double[] values) {
+  /**
+   * <code>Matrix</code> constructor specifying dimensions and a 1-D array of
+   * <code>double</code> values.
+   * @param m number of rows
+   * @param n number of columns
+   * @param values 1-D array of <code>double</code> values
+   * @throws NegativeArraySizeException if <code>m</code> or <code>n</code> is negative
+   * @throws NullPointerException if <code>values</code> is null
+   * @throws IllegalArgumentException if there is a dimension mismatch between <code>m</code> or <code>n</code>
+   * and <code>values</code>
+   */
+  public Matrix(int m, int n, double[] values) throws NegativeArraySizeException, NullPointerException, IllegalArgumentException {
     if ((m < 0) || (n < 0)) {
       throw new NegativeArraySizeException("The dimensions of a matrix cannot be negative.");
     }
@@ -153,8 +223,8 @@ public class Matrix {
       throw new IllegalArgumentException("The length of the array of matrix values does not match the dimensions.");
     }
 
-    this.m = (n == 0) ? 0 : m;
-    this.n = (m == 0) ? 0 : n;
+    this.m = m;
+    this.n = n;
     this.values = new double[m][n];
     for (int i = 0; i < m; i++) {
       for (int j = 0; j < n; j++) {
@@ -163,12 +233,19 @@ public class Matrix {
     }
   }
 
-  public Matrix(int m, int n) {
+  /**
+   * <code>Matrix</code> constructor specifying dimensions, initializes all <code>matrix</code>
+   * values to 0.
+   * @param m number of rows
+   * @param n number of columns
+   * @throws NegativeArraySizeException if <code>m</code> or <code>n</code> is negative
+   */
+  public Matrix(int m, int n) throws NegativeArraySizeException {
     if ((m < 0) || (n < 0)) {
       throw new NegativeArraySizeException("The dimensions of a matrix cannot be negative.");
     }
-    this.m = (n == 0) ? 0 : m;
-    this.n = (m == 0) ? 0 : n;
+    this.m = m;
+    this.n = n;
     this.values = new double[m][n];
   }
 
@@ -176,7 +253,16 @@ public class Matrix {
    * Setters and getters
    */
 
-  public void set(int i, int j, int value) {
+  /**
+   * Sets position at row <code>i</code> and column <code>j</code> to
+   * integer <code>value</code>.
+   * @param i row number
+   * @param j column number
+   * @param value integer to set to
+   * @throws IndexOutOfBoundsException if <code>i</code> or <code>j</code>
+   * are negative, or if they exceed the dimensions of the matrix
+   */
+  public void set(int i, int j, int value) throws IndexOutOfBoundsException {
    if ((i < 0) || (j < 0)) {
      throw new IndexOutOfBoundsException("Indices to set are negative.");
    }
@@ -186,7 +272,16 @@ public class Matrix {
    this.values[i][j] = (double) value;
   }
 
-  public void set(int i, int j, float value) {
+  /**
+   * Sets position at row <code>i</code> and column <code>j</code> to
+   * float <code>value</code>.
+   * @param i row number
+   * @param j column number
+   * @param value float to set to
+   * @throws IndexOutOfBoundsException if <code>i</code> or <code>j</code>
+   * are negative, or if they exceed the dimensions of the matrix
+   */
+  public void set(int i, int j, float value) throws IndexOutOfBoundsException {
    if ((i < 0) || (j < 0)) {
      throw new IndexOutOfBoundsException("Indices to set are negative.");
    }
@@ -196,7 +291,16 @@ public class Matrix {
    this.values[i][j] = (double) value;
   }
 
-  public void set(int i, int j, double value) {
+  /**
+   * Sets position at row <code>i</code> and column <code>j</code> to
+   * double <code>value</code>.
+   * @param i row number
+   * @param j column number
+   * @param value double to set to
+   * @throws IndexOutOfBoundsException if <code>i</code> or <code>j</code>
+   * are negative, or if they exceed the dimensions of the matrix
+   */
+  public void set(int i, int j, double value) throws IndexOutOfBoundsException {
     if ((i < 0) || (j < 0)) {
       throw new IndexOutOfBoundsException("Indices to set are negative.");
     }
@@ -206,7 +310,12 @@ public class Matrix {
     this.values[i][j] = value;
   }
 
-  public void set(Matrix m) {
+  /**
+   * Sets this matrix to the argument matrix
+   * @param m matrix to copy from
+   * @throws NullPointerException if <code>matrix</code> argument is null
+   */
+  public void set(Matrix m) throws NullPointerException {
     if (m == null) {
       throw new NullPointerException("The matrix cannot be set to a null matrix.");
     }
@@ -215,7 +324,15 @@ public class Matrix {
     this.values = m.values;
   }
 
-  public Double get(int i, int j) {
+  /**
+   * Gets the <code>double</code> value at row <code>i</code> and column <code>j</code>
+   * @param i row number
+   * @param j column number
+   * @return the value at row <code>i</code> and column <code>j</code>
+   * @throws IndexOutOfBoundsException if <code>i</code> or <code>j</code>
+   * are negative, or if they exceed the dimensions of the matrix
+   */
+  public double get(int i, int j) throws IndexOutOfBoundsException {
     if ((i < 0) || (j < 0)) {
       throw new IndexOutOfBoundsException("Indices to get are negative.");
     }
@@ -225,12 +342,16 @@ public class Matrix {
     return this.values[i][j];
   }
 
-  public Matrix concat(Matrix m) {
+  /**
+   * Concatenates this matrix horizontally with the argument matrix
+   * @param m matrix to concatenate with this one
+   * @return new concatenated matrix
+   * @throws NullPointerException if the argument matrix is null
+   * @throws ArithmeticException if the m dimensions of both matrices do not match
+   */
+  public Matrix concat(Matrix m) throws NullPointerException, ArithmeticException {
     if (m == null) {
       throw new NullPointerException("The matrix to be added cannot be null.");
-    }
-    if (m.isEmpty()) {
-      return this;
     }
     if (this.m != m.m) {
       throw new ArithmeticException("Matrices to be concatenated must have matching m dimensions.");
@@ -365,7 +486,7 @@ public class Matrix {
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
         Random rand = new Random();
-        ret.set(i, j, rand.nextDouble() * (upper - lower) + lower); // TODO: check math
+        ret.set(i, j, rand.nextDouble() * (upper - lower) + lower);
       }
     }
     return ret;
@@ -393,7 +514,7 @@ public class Matrix {
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
         Random rand = new Random();
-        ret.set(i, j, rand.nextDouble() * (upper - lower) + lower); // TODO: check math
+        ret.set(i, j, rand.nextDouble() * (upper - lower) + lower);
       }
     }
     return ret;
@@ -572,7 +693,6 @@ public class Matrix {
       throw new NullPointerException("The matrix to be added cannot be null.");
     }
     if (this.n != m.m) {
-      // TODO: reword this exception message?
       throw new ArithmeticException("The n dimension of the first matrix does not match the m dimension of the second.");
     }
     Matrix ret = new Matrix(this.m, m.n);
@@ -600,8 +720,8 @@ public class Matrix {
     if (this.m != this.n) {
       throw new ArithmeticException("Only determinants of n x n matrices can be calculated.");
     }
-    if (this.m == 0) {
-      throw new IllegalArgumentException("Determinants of empty matrices cannot be calculated.");
+    if (this.isEmpty()) {
+      return 1;
     }
     if (this.m == 1) {
       return this.values[0][0];
@@ -616,9 +736,6 @@ public class Matrix {
   public double trace() {
     if (this.m != this.n) {
       throw new ArithmeticException("Only traces of n x n matrices can be calculated.");
-    }
-    if (this.m == 0) {
-      throw new IllegalArgumentException("Traces of empty matrices cannot be calculated.");
     }
     double trace = 0;
     for (int i = 0; i < this.m; i++) {
@@ -635,6 +752,20 @@ public class Matrix {
       throw new IndexOutOfBoundsException("Indices to find the minor exceed matrix dimensions.");
     }
     return ((this.delRow(i)).delColumn(j)).determinant();
+  }
+
+  public int rank() {
+    Matrix temp = new Matrix(this.m, this.n, this.values);
+    temp.reducedRowEchelonForm();
+    int rank = 0;
+    int min_dim = Math.min(this.m, this.n);
+    for (int i = 0; i < min_dim; i++) {
+      if (temp.values[i][i] == 1) {
+        rank++;
+      }
+    }
+    return rank;
+    //TODO: make more efficient
   }
 
   public Matrix transpose() {
@@ -912,18 +1043,10 @@ public class Matrix {
   }
 
   public boolean isInvertible() {
-    /*
-     * Design choice - return false or throw error for empty and non-nxn matrices?
-     */
     if (this.m != this.n) {
       return false;
     }
-    try {
-      return (this.determinant() != 0);
-    }
-    catch (IllegalArgumentException e) {
-      throw new IllegalArgumentException("The inverse of an empty matrix is undefined.");
-    }
+    return (this.determinant() != 0);
   }
 
   public boolean isInEchelonForm() {
@@ -952,6 +1075,24 @@ public class Matrix {
     return this.isInReducedRowEchelonForm();
   }
 
+  public boolean isFullRank() {
+    return (this.rank() == Math.min(this.m, this.n));
+  }
+
+  public boolean isLinearlyDependent() {
+    if (this.isEmpty()) {
+      // TODO: find out what happens here
+      throw new IllegalArgumentException();
+    }
+    if (this.n > this.m) {
+      return true;
+    }
+    if (this.rank() < this.n) {
+      return true;
+    }
+    return false;
+  }
+
   /*
    * Overridden methods
    */
@@ -959,6 +1100,9 @@ public class Matrix {
   @Override
   public String toString() {
     // TODO: Improve padding for negative numbers, varying digits, float
+    if (this.isEmpty()) {
+      return "[]";
+    }
     String matrix = "[ ";
     for (int i = 0; i < m; i++) {
       String row = "";
@@ -1102,7 +1246,7 @@ public class Matrix {
     if ((row_i < 0) || (row_j < 0)) {
       throw new IndexOutOfBoundsException("Row index to swap is negative.");
     }
-    if ((row_i >= this.m) || (row_j >= this.n)) {
+    if ((row_i >= this.m) || (row_j >= this.m)) {
       throw new IndexOutOfBoundsException("Row index to swap exceeds matrix dimensions.");
     }
     for (int j = 0; j < this.n; j++) {
@@ -1137,7 +1281,7 @@ public class Matrix {
     if (row_i >= this.m) {
       throw new IndexOutOfBoundsException("Row index to scale exceeds matrix dimensions.");
     }
-    if (row_j >= this.n) {
+    if (row_j >= this.m) {
       throw new IndexOutOfBoundsException("Row index to add exceeds matrix dimensions.");
     }
     if (const_k == 0) {

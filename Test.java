@@ -1,6 +1,7 @@
 
 import jmatrix.*;
 import java.util.Random;
+import java.lang.Math;
 
 public class Test {
 
@@ -125,7 +126,13 @@ public class Test {
     System.out.println(m);
     Matrix m2 = new Matrix(0, 0);
     System.out.println(m2);
-    System.out.println(m.multiply(m2));
+    try {
+      System.out.println(m.multiply(m2));
+    }
+    catch (RuntimeException e) {
+      System.err.println("MultiplyException: " + e.getMessage());
+    }
+
   }
 
   public static void testDelete() {
@@ -390,7 +397,8 @@ public class Test {
 
     for (int i = 0; i < 200; i++) {
       Random rand = new Random();
-      m = new Matrix(rand.nextInt(10), rand.nextInt(10));
+      int dim = rand.nextInt(10);
+      m = new Matrix(dim, dim);
       m.inplaceFillRandomInt(-5, 5);
       System.out.println(m);
       Matrix inverse = null;
@@ -410,12 +418,34 @@ public class Test {
     }
   }
 
+  public static void testRank() {
+    double[][] values =  {{2.0, 0.0, 4.0},
+                        {-5.0, 2.0, -2.0},
+                        {-2.0, 1.0, 2.0},
+                        {1.0, -4.0, 0.0},
+                        {-1.0, -2.0, 2.0},
+                        {-5.0, 2.0, 0.0},
+                        {-4.0, 4.0, -1.0},
+                        {2.0, -4.0, -1.0}};
+    Matrix ma = new Matrix(8, 3, values);
+    System.out.println(ma);
+    System.out.println(ma.rank());
+
+
+    for (int i = 0; i < 200; i++) {
+      Random rand = new Random();
+      Matrix m = new Matrix(rand.nextInt(10), rand.nextInt(10));
+      m.inplaceFillRandomInt(-5, 5);
+      System.out.println(m);
+      System.out.format("The rank of m is %d.%n", m.rank());
+    }
+  }
+
   public static void main(String[] args) {
     //transposed.set(neg);
     // test for shallow / deep copying with set
 
-    /*
-    Test.testMatrixInput();
+    /*Test.testMatrixInput();
     Test.testTranspose();
     Test.testNeg();
     Test.testMultiply();
@@ -426,10 +456,16 @@ public class Test {
     Test.testEF();
     Test.testRREF();
     Test.testEchelonForm();
-    */
-
     Test.testInverse();
+    Test.testRank();*/
 
+    /*
+    double[][] values = {{1/Math.sqrt(2), 1/Math.sqrt(2)}, {-1/Math.sqrt(2), 1/Math.sqrt(2)}};
+      //{0,1,0}, {1,0,0}, {0,0,1}};
+    Matrix m = new Matrix(2,2,values);
+    System.out.println(m);
+    System.out.println(m.determinant());
+    */
   }
 
 }
