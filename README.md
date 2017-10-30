@@ -41,7 +41,7 @@ using for testing.
   * resize**
   * sparse matrices with sparsify/densify functions**
   * flexible numerical types
-  * smart slicing**
+  * smart slicing
 
 ** not yet implemented
 
@@ -54,3 +54,5 @@ using for testing.
   matrix representation to have a 2D array of double values, I had to duplicate a lot of code
   to allow flexibility at the user end in instantiating matrices with int or float array values
 * Practised good documentation + used javadocs for the first time
+* Dealt with agonizing errors from lossy floating-point arithmetic - thinking
+  about a fix for this

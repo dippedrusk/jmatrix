@@ -2,6 +2,8 @@ import jmatrix.*;
 import java.util.Random;
 import java.lang.Math;
 
+import java.text.DecimalFormat;
+
 public class Test {
 
   public static void testMatrixInput() {
@@ -250,6 +252,18 @@ public class Test {
     System.out.println(m);
     System.out.println(m.isEF());
 
+    m = Matrix.createZeroMatrix(0, 3);
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    m = Matrix.createZeroMatrix(0, 0);
+    System.out.println(m);
+    System.out.println(m.isEF());
+
+    m = Matrix.createZeroMatrix(3, 0);
+    System.out.println(m);
+    System.out.println(m.isEF());
+
     /*
      * Condition 2, 3 test cases
      */
@@ -291,6 +305,22 @@ public class Test {
     System.out.println(m.isRREF());
 
     m = Matrix.createZeroMatrix(0, 0);
+    System.out.println(m);
+    System.out.println(m.isRREF());
+
+    double[] vals = {1, 2, 3};
+    m = Matrix.createMatrix(1,3,vals);
+    System.out.println(m);
+    System.out.println(m.isRREF());
+    m = Matrix.createMatrix(3,1,vals);
+    System.out.println(m);
+    System.out.println(m.isRREF());
+
+    double[] vals2 = {2, 2, 3};
+    m = Matrix.createMatrix(1,3,vals2);
+    System.out.println(m);
+    System.out.println(m.isRREF());
+    m = Matrix.createMatrix(3,1,vals2);
     System.out.println(m);
     System.out.println(m.isRREF());
 
@@ -458,6 +488,148 @@ public class Test {
     }
   }
 
+  public static void testPrint() {
+    int[][] values = new int[3][2];
+    values[0][0] = 1;
+    values[0][1] = 2;
+    values[1][0] = -1;
+    values[1][1] = 0;
+    values[2][0] = 11;
+    values[2][1] = -32456;
+    Matrix m = Matrix.createMatrix(3, 2, values);
+    System.out.println(m);
+
+    m = Matrix.createZeroMatrix(3, 3);
+    System.out.println(m);
+
+    m = Matrix.createIdentityMatrix(3);
+    System.out.println(m);
+  }
+
+  public static void testSlice() {
+    Matrix m = Matrix.createIdentityMatrix(4);
+    System.out.println(m);
+    System.out.println(m.slice(0,2,0,2));
+    System.out.println(m.slice(1,1,2,2));
+    System.out.println(m.slice(1,4,2,2));
+    try {
+      System.out.println(m.slice(-1,2,0,2));
+    }
+    catch (RuntimeException e) {
+      System.err.println("SliceException: " + e.getMessage());
+    }
+    try {
+      System.out.println(m.slice(0,2,16,19));
+    }
+    catch (RuntimeException e) {
+      System.err.println("SliceException: " + e.getMessage());
+    }
+    try {
+      System.out.println(m.slice(1,2,3,1));
+    }
+    catch (RuntimeException e) {
+      System.err.println("SliceException: " + e.getMessage());
+    }
+    System.out.println(m.sliceRows(0,100));
+    System.out.println(m.sliceRows(3,100));
+    System.out.println(m.sliceRows(1,4));
+    try {
+      System.out.println(m.sliceRows(4,4));
+    }
+    catch (RuntimeException e) {
+      System.err.println("SliceException: " + e.getMessage());
+    }
+    System.out.println(m.sliceColumns(0,1000));
+    System.out.println(m.sliceColumns(3,99));
+    System.out.println(m.sliceColumns(2,2));
+    System.out.println(m.sliceColumns(2,3));
+  }
+
+  public static void automatedTesting() {
+    DecimalFormat formatter = new DecimalFormat("000000000000000000000");
+
+    /*
+    System.out.printf("Testing echelon form...%n%n");
+    for (int i = 0; i < 10000; i++) {
+      String test = "Test ";
+      test += formatter.format(i);
+      Random rand = new Random();
+      Matrix m = Matrix.createZeroMatrix(rand.nextInt(10), rand.nextInt(10));
+      if (rand.nextInt() % 2 == 0) {
+        m = m.fillRandomFloat();
+      }
+      else {
+        m = m.fillRandomInt();
+      }
+      Matrix echelonForm = null;
+      try {
+        echelonForm = m.echelonForm();
+      }
+      catch (RuntimeException e) {
+        System.err.println(m);
+        System.err.println("EF CONVERSION BUG!!! " + e.getMessage());
+      }
+      boolean EF = false;
+      try {
+        EF = echelonForm.isInEchelonForm();
+        if (EF) {
+          test += ": PASS";
+        }
+        else {
+          System.out.println(m);
+          System.out.println(m.echelonForm());
+          throw new RuntimeException("BUG!!!");
+        }
+      }
+      catch (RuntimeException e) {
+        System.err.println(m);
+        System.err.println(echelonForm);
+        System.err.println("EF BOOLEAN BUG!!! " + e.getMessage());
+      }
+      System.out.println(test);
+    } */
+
+    System.out.printf("Testing reduced row echelon form...%n%n");
+    for (int i = 0;; i++) {
+      String test = "Test ";
+      test += formatter.format(i);
+      Random rand = new Random();
+      Matrix m = Matrix.createZeroMatrix(rand.nextInt(10), rand.nextInt(10));
+      if (rand.nextInt() % 2 == 0) {
+        m = m.fillRandomFloat();
+      }
+      else {
+        m = m.fillRandomInt();
+      }
+      Matrix RREF = null;
+      try {
+        RREF = m.reducedRowEchelonForm();
+      }
+      catch (RuntimeException e) {
+        System.err.println(m);
+        System.err.println("RREF CONVERSION BUG!!! " + e.getMessage());
+      }
+      boolean rref = false;
+      try {
+        rref = RREF.isRREF();
+      }
+      catch (RuntimeException e) {
+        System.err.println(m);
+        System.err.println(RREF);
+        System.err.println("RREF BOOLEAN BUG!!! " + e.getMessage());
+      }
+      if (rref) {
+        test += ": PASS";
+      }
+      else {
+        System.err.println(RREF);
+        test += ": FAIL";
+        //throw new RuntimeException("There's a problem here.");
+      }
+      System.out.println(test);
+    }
+  }
+
   public static void main(String[] args) {
     //transposed.set(neg);
     // test for shallow / deep copying with set
@@ -471,13 +643,17 @@ public class Test {
     Test.testPow();
     Test.testDeterminant();
     Test.testAbs();
+    Test.testRank();
+    Test.testClone();
+    Test.testPrint();
+    Test.testSlice();
     Test.testEF();
     Test.testRREF();
     Test.testEchelonForm();
     Test.testInverse();
-    Test.testRank();
-    Test.testClone();
     */
+
+    //Test.automatedTesting();
 
     /*
     double[][] values = {{1/Math.sqrt(2), 1/Math.sqrt(2)}, {-1/Math.sqrt(2), 1/Math.sqrt(2)}};

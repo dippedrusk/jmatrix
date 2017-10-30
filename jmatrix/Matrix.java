@@ -13,6 +13,10 @@ import java.lang.Math;
  */
 public final class Matrix implements Cloneable {
 
+  // TODO: check that every method returns modified deep copies of matrices
+  // TODO: standardize [][] notation for accessing values array
+  // TODO: think about precision, BigDecimals, etc.
+
   /*
    * To be immutable from the user's POV, the set methods have been removed and
    * no references to the values array are passed to the caller
@@ -379,7 +383,7 @@ public final class Matrix implements Cloneable {
   }
 
   /**
-   * Gets the <code>double</code> value at row <code>i</code> and column <code>j</code>
+   * Gets the <code>double</code> value at row <code>i</code> and column <code>j</code>.
    * @param i row number
    * @param j column number
    * @return the value at row <code>i</code> and column <code>j</code>
@@ -397,7 +401,7 @@ public final class Matrix implements Cloneable {
   }
 
   /**
-   * Concatenates this matrix horizontally with the argument matrix
+   * Concatenates this matrix horizontally with the argument matrix.
    * @param m matrix to concatenate with this one
    * @return new concatenated matrix
    * @throws NullPointerException if the argument matrix is null
@@ -426,6 +430,12 @@ public final class Matrix implements Cloneable {
    * Fill matrix methods
    */
 
+  /**
+   * Returns a matrix of this one's dimensions with every entry set to the value
+   * of <code>int</code> <code>k</code>.
+   * @param k <code>int</code> to fill the matrix with
+   * @return copy of this matrix filled with <code>k</code>
+   */
   public Matrix fill(int k) {
     Matrix ret = Matrix.createZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
@@ -436,6 +446,12 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
+  /**
+   * Returns a matrix of this one's dimensions with every entry set to the value
+   * of <code>float</code> <code>k</code>.
+   * @param k <code>float</code> to fill the matrix with
+   * @return copy of this matrix filled with <code>k</code>
+   */
   public Matrix fill(float k) {
     Matrix ret = Matrix.createZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
@@ -446,6 +462,12 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
+  /**
+   * Returns a matrix of this one's dimensions with every entry set to the value
+   * of <code>double</code> <code>k</code>.
+   * @param k <code>double</code> to fill the matrix with
+   * @return copy of this matrix filled with <code>k</code>
+   */
   public Matrix fill(double k) {
     Matrix ret = Matrix.createZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
@@ -456,6 +478,11 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
+  /**
+   * Returns a matrix of this one's dimensions, filled with pseudorandom integer
+   * values.
+   * @return copy of this matrix filled with pseudorandom integer values
+   */
   public Matrix fillRandomInt() {
     Matrix ret = Matrix.createZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
@@ -467,7 +494,18 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
-  public Matrix fillRandomInt(int upper) {
+  /**
+   * Returns a matrix of this one's dimensions, filled with pseudorandom integer
+   * values between 0 (inclusive) and the specified upper bound (exclusive).
+   * @param upper positive integer upper bound
+   * @return copy of this matrix filled with pseudorandom integer values between
+   * 0 (inclusive) and <code>upper</code> (exclusive)
+   * @throws IllegalArgumentException if upper bound is non-positive
+   */
+  public Matrix fillRandomInt(int upper) throws IllegalArgumentException {
+    if (upper <= 0) {
+      throw new IllegalArgumentException("The upper bound must be positive as the default lower bound is 0.");
+    }
     Matrix ret = Matrix.createZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
@@ -478,7 +516,17 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
-  public Matrix fillRandomInt(int lower, int upper) {
+  /**
+   * Returns a matrix of this one's dimensions, filled with pseudorandom integer
+   * values between the specified lower (inclusive) and upper (exclusive) bounds.
+   * @param lower integer lower bound
+   * @param upper integer upper bound
+   * @return copy of this matrix filled with pseudorandom integer values between
+   * <code>lower</code> (inclusive) and <code>upper</code> (exclusive)
+   * @throws IllegalArgumentException if the lower bound is greater than or equal
+   * to the upper bound
+   */
+  public Matrix fillRandomInt(int lower, int upper) throws IllegalArgumentException {
     if (lower > upper) {
       throw new IllegalArgumentException("The lower bound is greater than the upper bound.");
     }
@@ -495,6 +543,11 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
+  /**
+   * Returns a matrix of this one's dimensions, filled with pseudorandom floating
+   * point values between 0.0 (inclusive) and 1.0 (exclusive).
+   * @return copy of this matrix filled with pseudorandom floating point values
+   */
   public Matrix fillRandomFloat() {
     Matrix ret = Matrix.createZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
@@ -506,7 +559,18 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
-  public Matrix fillRandomFloat(float upper) {
+  /**
+   * Returns a matrix of this one's dimensions, filled with pseudorandom floating
+   * point values between 0.0 (inclusive) and the specified upper bound (exclusive).
+   * @param upper positive <code>float</code> upper bound
+   * @return copy of this matrix filled with pseudorandom floating point values between
+   * 0.0 (inclusive) and <code>upper</code> (exclusive)
+   * @throws IllegalArgumentException if upper bound is non-positive
+   */
+  public Matrix fillRandomFloat(float upper) throws IllegalArgumentException {
+    if (upper <= 0.0) {
+      throw new IllegalArgumentException("The upper bound must be positive as the default lower bound is 0.0.");
+    }
     Matrix ret = Matrix.createZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
@@ -517,7 +581,17 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
-  public Matrix fillRandomFloat(float lower, float upper) {
+  /**
+   * Returns a matrix of this one's dimensions, filled with pseudorandom floating
+   * point values between the specified lower (inclusive) and upper (exclusive) bounds.
+   * @param lower positive <code>float</code> lower bound
+   * @param upper positive <code>float</code> upper bound
+   * @return copy of this matrix filled with pseudorandom floating point values between
+   * <code>lower</code> (inclusive) and <code>upper</code> (exclusive)
+   * @throws IllegalArgumentException if the lower bound is greater than or equal
+   * to the upper bound
+   */
+  public Matrix fillRandomFloat(float lower, float upper) throws IllegalArgumentException {
     if (lower > upper) {
       throw new IllegalArgumentException("The lower bound is greater than the upper bound.");
     }
@@ -534,6 +608,14 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
+  /**
+   * Returns a matrix of this one's dimensions, filled with pseudorandom floating
+   * point values between 0.0 (inclusive) and the specified upper bound (exclusive).
+   * @param upper positive <code>double</code> upper bound
+   * @return copy of this matrix filled with pseudorandom floating point values between
+   * 0.0 (inclusive) and <code>upper</code> (exclusive)
+   * @throws IllegalArgumentException if upper bound is non-positive
+   */
   public Matrix fillRandomFloat(double upper) {
     Matrix ret = Matrix.createZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
@@ -545,7 +627,17 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
-  public Matrix fillRandomFloat(double lower, double upper) {
+  /**
+   * Returns a matrix of this one's dimensions, filled with pseudorandom floating
+   * point values between the specified lower (inclusive) and upper (exclusive) bounds.
+   * @param lower positive <code>double</code> lower bound
+   * @param upper positive <code>double</code> upper bound
+   * @return copy of this matrix filled with pseudorandom floating point values between
+   * <code>lower</code> (inclusive) and <code>upper</code> (exclusive)
+   * @throws IllegalArgumentException if the lower bound is greater than or equal
+   * to the upper bound
+   */
+  public Matrix fillRandomFloat(double lower, double upper) throws IllegalArgumentException {
     if (lower > upper) {
       throw new IllegalArgumentException("The lower bound is greater than the upper bound.");
     }
@@ -566,6 +658,10 @@ public final class Matrix implements Cloneable {
    * Unary arithmetic
    */
 
+  /**
+   * Returns a copy of this matrix with every entry negated.
+   * @return copy of this matrix with every entry negated
+   */
   public Matrix neg() {
     Matrix ret = Matrix.createZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
@@ -576,6 +672,10 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
+  /**
+   * Returns a copy of this matrix with the absolute value of every entry.
+   * @return copy of this matrix with the absolute value of every entry
+   */
   public Matrix abs() {
     Matrix ret = Matrix.createZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
@@ -590,23 +690,38 @@ public final class Matrix implements Cloneable {
    * Binary arithmetic
    */
 
-  public Matrix pow(int x) {
+  /**
+   * Returns the matrix corresponding to the n-th power of this one.
+   * @param n power to raise this matrix to
+   * @return this matrix raised to the n-th power
+   * @throws ArithmeticException if the m and n dimensions of this matrix
+   * do not match
+   */
+  public Matrix pow(int n) throws ArithmeticException {
     if (this.m != this.n) {
       throw new ArithmeticException("Only powers of n x n matrices can be calculated.");
     }
-    if (x == 0) {
+    if (n == 0) {
       return Matrix.createIdentityMatrix(this.m);
     }
-    if (x == 1) {
+    if (n == 1) {
       return this;
     }
-    if (x == 2) {
+    if (n == 2) {
       return this.multiply(this);
     }
-    return (this.pow(x-1)).multiply(this);
+    return (this.pow(n-1)).multiply(this);
   }
 
-  public Matrix add(Matrix m) {
+  /**
+   * Adds this matrix to the argument matrix <code>m</code>.
+   * @param m matrix to add to this one
+   * @return matrix sum of this one and the argument matrix <code>m</code>
+   * @throws NullPointerException if the matrix to be added is null
+   * @throws ArithmeticException if the dimensions of both matrices are not
+   * identical
+   */
+  public Matrix add(Matrix m) throws NullPointerException, ArithmeticException {
     if (m == null) {
       throw new NullPointerException("The matrix to be added cannot be null.");
     }
@@ -623,7 +738,15 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
-  public Matrix subtract(Matrix m) {
+  /**
+   * Subtracts the argument matrix <code>m</code> from this one.
+   * @param m matrix to subtract from this one
+   * @return matrix sum of this one and the argument matrix <code>m</code>
+   * @throws NullPointerException if the matrix to be subtracted is null
+   * @throws ArithmeticException if the dimensions of both matrices are not
+   * identical
+   */
+  public Matrix subtract(Matrix m) throws NullPointerException, ArithmeticException {
     if (m == null) {
       throw new NullPointerException("The matrix to be added cannot be null.");
     }
@@ -640,7 +763,12 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
-  public Matrix multiply(int k) {
+  /**
+   * Scales every entry in this matrix by the <code>int</code> argument <code>k</code>
+   * @param k <code>int</code> value to scale every matrix entry by
+   * @return copy of this matrix with every entry scaled by <code>k</code>
+   */
+  public Matrix scale(int k) {
     Matrix ret = Matrix.createZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
@@ -650,7 +778,12 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
-  public Matrix multiply(float k) {
+  /**
+   * Scales every entry in this matrix by the <code>float</code> argument <code>k</code>
+   * @param k <code>float</code> value to scale every matrix entry by
+   * @return copy of this matrix with every entry scaled by <code>k</code>
+   */
+  public Matrix scale(float k) {
     Matrix ret = Matrix.createZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
@@ -660,7 +793,12 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
-  public Matrix multiply(double k) {
+  /**
+   * Scales every entry in this matrix by the <code>double</code> argument <code>k</code>
+   * @param k <code>double</code> value to scale every matrix entry by
+   * @return copy of this matrix with every entry scaled by <code>k</code>
+   */
+  public Matrix scale(double k) {
     Matrix ret = Matrix.createZeroMatrix(this.m, this.n);
     for (int i = 0; i < this.m; i++) {
       for (int j = 0; j < this.n; j++) {
@@ -670,7 +808,15 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
-  public Matrix multiply(Matrix m) {
+  /**
+   * Multiplies this matrix by the argument matrix <code>m</code>.
+   * @param m matrix to multiply this one with
+   * @return matrix product of this one and the argument matrix <code>m</code>
+   * @throws NullPointerException if the matrix to be multiplied is null
+   * @throws ArithmeticException if the n dimension of this matrix does not
+   * match the m dimension of the argument matrix
+   */
+  public Matrix multiply(Matrix m) throws NullPointerException, ArithmeticException {
     if (m == null) {
       throw new NullPointerException("The matrix to be added cannot be null.");
     }
@@ -858,11 +1004,10 @@ public final class Matrix implements Cloneable {
     Matrix identity = Matrix.createIdentityMatrix(this.m);
     Matrix ret = this.concat(identity);
     ret = ret.reducedRowEchelonForm();
-    // TODO: improve with slicing
-    for (int i = 0; i < this.m; i++) {
-      ret = ret.delColumn(0);
+    if (!this.isEmpty()) {
+      return ret.sliceColumns(this.n, ret.n);
     }
-    return ret;
+    return Matrix.createZeroMatrix(0,0);
   }
 
   /*
@@ -878,7 +1023,7 @@ public final class Matrix implements Cloneable {
    * @throws IllegalArgumentException if the length of the <code>column</code> array
    * does not match the rows of the matrix
    */
-  public Matrix addColumn(int[] column) {
+  public Matrix addColumn(int[] column) throws NullPointerException, IllegalArgumentException {
     if (column == null) {
       throw new NullPointerException("The column to be added is null.");
     }
@@ -904,7 +1049,7 @@ public final class Matrix implements Cloneable {
    * @throws IllegalArgumentException if the length of the <code>column</code> array
    * does not match the rows of the matrix
    */
-  public Matrix addColumn(float[] column) {
+  public Matrix addColumn(float[] column) throws NullPointerException, IllegalArgumentException {
     if (column == null) {
       throw new NullPointerException("The column to be added is null.");
     }
@@ -930,7 +1075,7 @@ public final class Matrix implements Cloneable {
    * @throws IllegalArgumentException if the length of the <code>column</code> array
    * does not match the rows of the matrix
    */
-  public Matrix addColumn(double[] column) {
+  public Matrix addColumn(double[] column) throws NullPointerException, IllegalArgumentException {
     if (column == null) {
       throw new NullPointerException("The column to be added is null.");
     }
@@ -1091,6 +1236,108 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
+  /**
+   * Returns a matrix with the specified rows and columns from this one.
+   * @param i1 first row of slice (inclusive)
+   * @param i2 last row of slice (exclusive)
+   * @param j1 first column of slice (inclusive)
+   * @param j2 last column of slice (exclusive)
+   * @return matrix constructed from rows <code>i1</code> to <code>i2</code>
+   * and columns <code>j1</code> to <code>j2</code> of this matrix
+   * @throws IndexOutOfBoundsException if any of the parameters are negative or
+   * if i1 exceeds the m dimension or j1 exceeds the n dimension
+   * @throws IllegalArgumentException if the slicing bound between i1 and i2 or
+   * between j1 and j2 is negative
+   */
+  public Matrix slice(int i1, int i2, int j1, int j2) throws IndexOutOfBoundsException, IllegalArgumentException {
+    if ((i1 < 0) || (i2 < 0) || (j1 < 0) || (j2 < 0)) {
+      throw new IndexOutOfBoundsException("Slicing index is negative.");
+    }
+    if ((i1 >= this.m) || (j1 >= this.n)) {
+      throw new IndexOutOfBoundsException("Slicing index exceeds matrix dimensions.");
+    }
+    if ((i1 > i2) || (j1 > j2)) {
+      throw new IllegalArgumentException("Slicing bound is negative.");
+    }
+    if ((i2 > this.m) || (j2 > this.n)) {
+      i2 = this.m;
+      j2 = this.n;
+    }
+    Matrix ret = Matrix.createZeroMatrix(i2-i1, j2-j1);
+    for (int i = i1; i < i2; i++) {
+      for (int j = j1; j < j2; j++) {
+        ret.values[i - i1][j - j1] = this.values[i][j];
+      }
+    }
+    return ret;
+  }
+
+  /**
+   * Returns a matrix with the specified rows and all columns from this one.
+   * @param i1 first row of slice (inclusive)
+   * @param i2 last row of slice (exclusive)
+   * @return matrix constructed from rows <code>i1</code> to <code>i2</code>
+   * of this matrix
+   * @throws IndexOutOfBoundsException if either of the parameters are negative or
+   * if i1 exceeds the m dimension
+   * @throws IllegalArgumentException if the slicing bound between i1 and i2 is
+   * negative
+   */
+  public Matrix sliceRows(int i1, int i2) throws IndexOutOfBoundsException, IllegalArgumentException {
+    if ((i1 < 0) || (i2 < 0)) {
+      throw new IndexOutOfBoundsException("Slicing index is negative.");
+    }
+    if (i1 >= this.m) {
+      throw new IndexOutOfBoundsException("Slicing index exceeds matrix dimensions.");
+    }
+    if (i1 > i2) {
+      throw new IllegalArgumentException("Slicing bound is negative.");
+    }
+    if (i2 > this.m) {
+      i2 = this.m;
+    }
+    Matrix ret = Matrix.createZeroMatrix(i2-i1, this.n);
+    for (int i = i1; i < i2; i++) {
+      for (int j = 0; j < this.n; j++) {
+        ret.values[i - i1][j] = this.values[i][j];
+      }
+    }
+    return ret;
+  }
+
+  /**
+   * Returns a matrix with the specified columns and all rows from this one.
+   * @param j1 first column of slice (inclusive)
+   * @param j2 last column of slice (exclusive)
+   * @return matrix constructed from columns <code>j1</code> to <code>j2</code>
+   * of this matrix
+   * @throws IndexOutOfBoundsException if either of the parameters are negative or
+   * if j1 exceeds the n dimension
+   * @throws IllegalArgumentException if the slicing bound between j1 and j2 is
+   * negative
+   */
+  public Matrix sliceColumns(int j1, int j2) throws IndexOutOfBoundsException, IllegalArgumentException {
+    if ((j1 < 0) || (j2 < 0)) {
+      throw new IndexOutOfBoundsException("Slicing index is negative.");
+    }
+    if (j1 >= this.n) {
+      throw new IndexOutOfBoundsException("Slicing index exceeds matrix dimensions.");
+    }
+    if (j1 > j2) {
+      throw new IllegalArgumentException("Slicing bound is negative.");
+    }
+    if (j2 > this.n) {
+      j2 = this.n;
+    }
+    Matrix ret = Matrix.createZeroMatrix(this.m, j2-j1);
+    for (int i = 0; i < this.m; i++) {
+      for (int j = j1; j < j2; j++) {
+        ret.values[i][j - j1] = this.values[i][j];
+      }
+    }
+    return ret;
+  }
+
   /*
    * Boolean methods
    */
@@ -1129,7 +1376,7 @@ public final class Matrix implements Cloneable {
      *    entry of the row above
      * 3. All entries in a column below a leading entry are zeros
      */
-    return (this.nonZeroRowsAboveZeroRows() && this.leadingEntriesEFCompliant());
+    return (this.nonZeroRowsAboveZeroRows() && this.isUpperTriangular());
   }
 
   /**
@@ -1149,7 +1396,7 @@ public final class Matrix implements Cloneable {
     if (!this.isInEchelonForm()) {
       return false;
     }
-    return this.leadingEntriesRREFCompliant();
+    return (this.areLeadingEntriesOnes() && this.areLeadingEntriesBelowZeroes());
   }
 
   /**
@@ -1173,13 +1420,11 @@ public final class Matrix implements Cloneable {
   /**
    * Checks if the n m-dimensional vectors represented by this m x n matrix
    * are linearly dependent (in Rm).
-   * @throws IllegalArgumentException if this matrix is empty
    * @return true if linearly dependent, false if linearly dependent
    */
-  public boolean isLinearlyDependent() throws IllegalArgumentException {
+  public boolean isLinearlyDependent() {
     if (this.isEmpty()) {
-      // TODO: find out what happens here
-      throw new IllegalArgumentException();
+      return false;
     }
     if (this.n > this.m) {
       return true;
@@ -1190,26 +1435,88 @@ public final class Matrix implements Cloneable {
     return false;
   }
 
+  /**
+   * Checks whether all the entries below the main diagonal are 0.
+   * @return true if this matrix is upper triangular, false otherwise
+   */
+  public boolean isUpperTriangular() {
+    if (this.isEmpty()) {
+      return true; // TODO: verify
+    }
+    int min_dim = Math.min(this.m, this.n);
+    for (int i = 0; i < min_dim; i++) {
+      for (int j = 0; j < i; j++) {
+        if (this.values[i][j] != 0.0) {
+          return false;
+        }
+      }
+    }
+    for (int i = min_dim; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        if (this.values[i][j] != 0.0) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Checks whether all entries above the main diagonal are 0.
+   * @return true if this matrix is lower triangular, false otherwise
+   */
+  public boolean isLowerTriangular() {
+    if (this.isEmpty()) {
+      return true; // TODO: verify
+    }
+    int min_dim = Math.min(this.m, this.n);
+    for (int i = 0; i < min_dim; i++) {
+      for (int j = i+1; j < this.n; j++) {
+        if (this.values[i][j] != 0.0) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   /*
    * Overridden methods
    */
 
   /**
-   * Returns string with the matrix split into rows and columns and entries
-   * separated by commas.
+   * Returns string with the matrix split into rows and columns, with entries
+   * separated by commas and rows separated by semicolons.
    * @return string representation of matrix
    */
   @Override
   public String toString() {
-    // TODO: Improve padding for negative numbers, varying digits, float
-    if (this.isEmpty()) {
-      return "[]";
-    }
     String matrix = "[ ";
+    double max_val = 0.0;
+    for (int i = 0; i < this.m; i++) {
+      for (int j = 0; j < this.n; j++) {
+        if (Math.abs(this.values[i][j]) > max_val) {
+          max_val = Math.abs(this.values[i][j]);
+        }
+      }
+    }
+    int max_digits = (max_val < 10.0) ? 1 : (int) Math.floor(Math.log10(max_val) + 1);
     for (int i = 0; i < m; i++) {
       String row = "";
       for (int j = 0; j < n; j++) {
-        row += this.values[i][j];
+        double entry = this.values[i][j];
+        double entry_abs = Math.abs(entry);
+        int this_digits = (entry_abs < 10.0) ? 1 : (int) Math.floor(Math.log10(entry_abs) + 1);
+        int padding = max_digits - this_digits;
+        for (int k = 0; k < padding; k++) {
+          row += " ";
+        }
+        if (1 / entry > 0.0) {
+          row += String.format(" %.3f", entry);
+        }
+        else {
+          row += String.format("%.3f", entry);
+        }
         if (j < n-1) {
           row += ", ";
         }
@@ -1217,7 +1524,7 @@ public final class Matrix implements Cloneable {
       if (i > 0) {
         matrix += "  ";
       }
-      matrix += row;
+      matrix += row + ";";
       if (i < m-1) {
         matrix += "\n";
       }
@@ -1262,6 +1569,13 @@ public final class Matrix implements Cloneable {
    * Private helper methods
    */
 
+  /**
+   * Checks whether this matrix deeply equals the argument matrix object
+   * <code>m</code>.
+   * @param m argument matrix to test equality
+   * @return true if the two matrices are non-null and deeply equal, false
+   * otherwise
+   */
   private boolean equals(Matrix m) {
    if (m == null) {
      return false;
@@ -1272,6 +1586,7 @@ public final class Matrix implements Cloneable {
    if (this.n != m.n) {
      return false;
    }
+   //TODO: find the correct method: return (this.values).deepEquals(m.values);
    for (int i = 0; i < this.m; i++) {
      for (int j = 0; j < this.n; j++) {
        if (this.get(i, j) != m.get(i, j)) {
@@ -1282,6 +1597,12 @@ public final class Matrix implements Cloneable {
    return true;
   }
 
+  /**
+   * Checks whether all rows containing non-zero entries are above all rows
+   * containing only zeroes in this matrix.
+   * @return true if all non-zero rows (if they exist) are above all zero rows
+   * (if they exist)
+   */
   private boolean nonZeroRowsAboveZeroRows() {
     int firstZeroRow = 0;
     while (firstZeroRow < this.m) {
@@ -1306,51 +1627,24 @@ public final class Matrix implements Cloneable {
     return true;
   }
 
-  private boolean leadingEntriesEFCompliant() {
-    // TODO: smarter matrix slicing might optimize this method
-    int leftmostLeadingEntryIndexAbove = -1;
-    for (int i = 0; i < this.m; i++) {
-      for (int j = 0; j < leftmostLeadingEntryIndexAbove + 1; j++) {
-        if (this.get(i, j) != 0) {
-          // leading entry of this row not to the right of leading entry above
-          return false;
-        }
-      }
-      for (int j = leftmostLeadingEntryIndexAbove + 1; j < this.n; j++) {
-        if (this.get(i, j) != 0) {
-          // leading entry
-          leftmostLeadingEntryIndexAbove = j;
-          break;
-        }
+  private boolean areLeadingEntriesOnes() {
+    int min_dim = Math.min(this.m, this.n);
+    for (int i = 0; i < min_dim; i++) {
+      if (1.0 - this.values[i][i] > 0.00000000001) {
+        return false;
       }
     }
     return true;
   }
-
-  private boolean leadingEntriesRREFCompliant() {
-    int leftmostLeadingEntryIndexAbove = -1;
-    for (int i = 0; i < this.m; i++) {
-      for (int j = 0; j < leftmostLeadingEntryIndexAbove + 1; j++) {
-        if (this.get(i, j) != 0) {
-          // leading entry of this row not to the right of leading entry above
-          return false;
-        }
-      }
-      for (int j = leftmostLeadingEntryIndexAbove + 1; j < this.n; j++) {
-        if (this.get(i, j) == 1) {
-          // appropriate leading entry
-          leftmostLeadingEntryIndexAbove = j;
-          for (int i_prev = 0; i_prev < i; i_prev++) {
-            // checking entries above the leading entry
-            if (this.get(i_prev, j) != 0) {
-              return false;
-            }
+  // TODO: fix precision issues in RREF and EF methods before changing these
+  private boolean areLeadingEntriesBelowZeroes() {
+    int min_dim = Math.min(this.m, this.n);
+    for (int i = 0; i < min_dim; i++) {
+      if ((Math.abs(this.values[i][i])) != 0.0) { // pivot
+        for (int j = 0; j < i; j++) {
+          if (Math.abs(this.values[j][i]) > 0.00000000001) {
+            return false;
           }
-          break;
-        }
-        else if (this.get(i, j) != 0) {
-          // leading entry not 1
-          return false;
         }
       }
     }
@@ -1364,7 +1658,7 @@ public final class Matrix implements Cloneable {
    * 3) Adding a multiple of one row to another row.
    */
 
-  private Matrix swapRows(int row_i, int row_j) {
+  private Matrix swapRows(int row_i, int row_j) throws IndexOutOfBoundsException {
     if ((row_i < 0) || (row_j < 0)) {
       throw new IndexOutOfBoundsException("Row index to swap is negative.");
     }
@@ -1380,7 +1674,7 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
-  private Matrix scaleRow(int row_i, double const_k) {
+  private Matrix scaleRow(int row_i, double const_k) throws IndexOutOfBoundsException, IllegalArgumentException {
     if (row_i < 0) {
       throw new IndexOutOfBoundsException("Row index to scale is negative.");
     }
@@ -1397,7 +1691,7 @@ public final class Matrix implements Cloneable {
     return ret;
   }
 
-  private Matrix addScaledRow(int row_i, double const_k, int row_j) {
+  private Matrix addScaledRow(int row_i, double const_k, int row_j) throws IndexOutOfBoundsException, IllegalArgumentException {
     if (row_i < 0) {
       throw new IndexOutOfBoundsException("Row index to scale is negative.");
     }
