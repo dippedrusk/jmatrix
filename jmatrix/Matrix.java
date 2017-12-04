@@ -9,7 +9,7 @@ import java.lang.Math;
  * <code>n</code> array of <code>double</code> values.
  * This implementation is currently not thread-safe.
  * @author Vasundhara Gautam
- * @version 0.0
+ * @version 1.0.0
  */
 public final class Matrix implements Cloneable {
 
